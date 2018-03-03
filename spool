@@ -1,0 +1,1074 @@
+Script started on Tue 06 Feb 2018 02:49:32 PM EST
+]0;fsong@nlp5: ~/nlp5/Teaching/465w18/java_tinyfsong@nlp5:~/nlp5/Teaching/465w18/java_tiny$ make clean
+rm -f parser.java Lexer.java sym.java *.class absyn/*.class *~
+]0;fsong@nlp5: ~/nlp5/Teaching/465w18/java_tinyfsong@nlp5:~/nlp5/Teaching/465w18/java_tiny$ make
+cup -dump -expect 3 tiny.cup
+Warning : Terminal "ERROR" was declared but never used
+Warning : *** Production "program1 ::= exp " never reduced
+===== Terminals =====
+[0]EOF [1]error [2]IF [3]THEN [4]ELSE 
+[5]END [6]REPEAT [7]UNTIL [8]READ [9]WRITE 
+[10]ASSIGN [11]EQ [12]LT [13]GT [14]PLUS 
+[15]MINUS [16]TIMES [17]OVER [18]LPAREN [19]RPAREN 
+[20]SEMI [21]ID [22]NUM [23]ERROR 
+
+===== Non terminals =====
+[0]program1 [1]program [2]stmt_seq [3]stmt [4]if_stmt 
+[5]repeat_stmt [6]assign_stmt [7]read_stmt [8]write_stmt [9]exp 
+[10]simple_exp [11]term [12]factor 
+
+===== Productions =====
+[0] $START ::= program EOF 
+[1] program1 ::= exp 
+[2] program ::= stmt_seq 
+[3] stmt_seq ::= stmt_seq SEMI stmt 
+[4] stmt_seq ::= stmt 
+[5] stmt_seq ::= error SEMI stmt 
+[6] stmt ::= if_stmt 
+[7] stmt ::= repeat_stmt 
+[8] stmt ::= assign_stmt 
+[9] stmt ::= read_stmt 
+[10] stmt ::= write_stmt 
+[11] if_stmt ::= IF exp THEN stmt_seq END 
+[12] if_stmt ::= IF exp THEN stmt_seq ELSE stmt_seq END 
+[13] repeat_stmt ::= REPEAT stmt_seq UNTIL exp 
+[14] assign_stmt ::= ID ASSIGN exp 
+[15] read_stmt ::= READ ID 
+[16] write_stmt ::= WRITE exp 
+[17] exp ::= simple_exp LT simple_exp 
+[18] exp ::= simple_exp GT simple_exp 
+[19] exp ::= simple_exp EQ simple_exp 
+[20] exp ::= simple_exp 
+[21] simple_exp ::= simple_exp PLUS term 
+[22] simple_exp ::= simple_exp MINUS term 
+[23] simple_exp ::= term 
+[24] term ::= term TIMES factor 
+[25] term ::= term OVER factor 
+[26] term ::= factor 
+[27] factor ::= LPAREN exp RPAREN 
+[28] factor ::= NUM 
+[29] factor ::= ID 
+
+===== Viable Prefix Recognizer =====
+START lalr_state [0]: {
+  [assign_stmt ::= (*) ID ASSIGN exp , {EOF SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq END , {EOF SEMI }]
+  [stmt ::= (*) assign_stmt , {EOF SEMI }]
+  [stmt_seq ::= (*) error SEMI stmt , {EOF SEMI }]
+  [program ::= (*) stmt_seq , {EOF }]
+  [write_stmt ::= (*) WRITE exp , {EOF SEMI }]
+  [repeat_stmt ::= (*) REPEAT stmt_seq UNTIL exp , {EOF SEMI }]
+  [stmt ::= (*) write_stmt , {EOF SEMI }]
+  [stmt ::= (*) repeat_stmt , {EOF SEMI }]
+  [stmt_seq ::= (*) stmt , {EOF SEMI }]
+  [read_stmt ::= (*) READ ID , {EOF SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq ELSE stmt_seq END , {EOF SEMI }]
+  [stmt ::= (*) read_stmt , {EOF SEMI }]
+  [stmt ::= (*) if_stmt , {EOF SEMI }]
+  [stmt_seq ::= (*) stmt_seq SEMI stmt , {EOF SEMI }]
+  [$START ::= (*) program EOF , {EOF }]
+}
+transition on stmt_seq to state [14]
+transition on error to state [13]
+transition on WRITE to state [12]
+transition on ID to state [11]
+transition on IF to state [10]
+transition on read_stmt to state [9]
+transition on program to state [8]
+transition on assign_stmt to state [7]
+transition on stmt to state [6]
+transition on write_stmt to state [5]
+transition on if_stmt to state [4]
+transition on repeat_stmt to state [3]
+transition on REPEAT to state [2]
+transition on READ to state [1]
+
+-------------------
+lalr_state [1]: {
+  [read_stmt ::= READ (*) ID , {EOF ELSE END UNTIL SEMI }]
+}
+transition on ID to state [55]
+
+-------------------
+lalr_state [2]: {
+  [assign_stmt ::= (*) ID ASSIGN exp , {UNTIL SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq END , {UNTIL SEMI }]
+  [stmt ::= (*) assign_stmt , {UNTIL SEMI }]
+  [stmt_seq ::= (*) error SEMI stmt , {UNTIL SEMI }]
+  [write_stmt ::= (*) WRITE exp , {UNTIL SEMI }]
+  [repeat_stmt ::= REPEAT (*) stmt_seq UNTIL exp , {EOF ELSE END UNTIL SEMI }]
+  [repeat_stmt ::= (*) REPEAT stmt_seq UNTIL exp , {UNTIL SEMI }]
+  [stmt ::= (*) write_stmt , {UNTIL SEMI }]
+  [stmt ::= (*) repeat_stmt , {UNTIL SEMI }]
+  [stmt_seq ::= (*) stmt , {UNTIL SEMI }]
+  [read_stmt ::= (*) READ ID , {UNTIL SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq ELSE stmt_seq END , {UNTIL SEMI }]
+  [stmt ::= (*) read_stmt , {UNTIL SEMI }]
+  [stmt ::= (*) if_stmt , {UNTIL SEMI }]
+  [stmt_seq ::= (*) stmt_seq SEMI stmt , {UNTIL SEMI }]
+}
+transition on stmt_seq to state [52]
+transition on error to state [13]
+transition on WRITE to state [12]
+transition on ID to state [11]
+transition on IF to state [10]
+transition on read_stmt to state [9]
+transition on assign_stmt to state [7]
+transition on stmt to state [6]
+transition on write_stmt to state [5]
+transition on if_stmt to state [4]
+transition on repeat_stmt to state [3]
+transition on REPEAT to state [2]
+transition on READ to state [1]
+
+-------------------
+lalr_state [3]: {
+  [stmt ::= repeat_stmt (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [4]: {
+  [stmt ::= if_stmt (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [5]: {
+  [stmt ::= write_stmt (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [6]: {
+  [stmt_seq ::= stmt (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [7]: {
+  [stmt ::= assign_stmt (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [8]: {
+  [$START ::= program (*) EOF , {EOF }]
+}
+transition on EOF to state [51]
+
+-------------------
+lalr_state [9]: {
+  [stmt ::= read_stmt (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [10]: {
+  [exp ::= (*) simple_exp , {THEN }]
+  [exp ::= (*) simple_exp LT simple_exp , {THEN }]
+  [if_stmt ::= IF (*) exp THEN stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) NUM , {THEN EQ LT GT PLUS MINUS TIMES OVER }]
+  [term ::= (*) term OVER factor , {THEN EQ LT GT PLUS MINUS TIMES OVER }]
+  [simple_exp ::= (*) simple_exp MINUS term , {THEN EQ LT GT PLUS MINUS }]
+  [exp ::= (*) simple_exp EQ simple_exp , {THEN }]
+  [factor ::= (*) LPAREN exp RPAREN , {THEN EQ LT GT PLUS MINUS TIMES OVER }]
+  [term ::= (*) term TIMES factor , {THEN EQ LT GT PLUS MINUS TIMES OVER }]
+  [simple_exp ::= (*) simple_exp PLUS term , {THEN EQ LT GT PLUS MINUS }]
+  [exp ::= (*) simple_exp GT simple_exp , {THEN }]
+  [if_stmt ::= IF (*) exp THEN stmt_seq ELSE stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) ID , {THEN EQ LT GT PLUS MINUS TIMES OVER }]
+  [term ::= (*) factor , {THEN EQ LT GT PLUS MINUS TIMES OVER }]
+  [simple_exp ::= (*) term , {THEN EQ LT GT PLUS MINUS }]
+}
+transition on exp to state [44]
+transition on LPAREN to state [24]
+transition on simple_exp to state [23]
+transition on term to state [22]
+transition on factor to state [21]
+transition on NUM to state [20]
+transition on ID to state [19]
+
+-------------------
+lalr_state [11]: {
+  [assign_stmt ::= ID (*) ASSIGN exp , {EOF ELSE END UNTIL SEMI }]
+}
+transition on ASSIGN to state [42]
+
+-------------------
+lalr_state [12]: {
+  [exp ::= (*) simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [exp ::= (*) simple_exp LT simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) NUM , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [term ::= (*) term OVER factor , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [simple_exp ::= (*) simple_exp MINUS term , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS SEMI }]
+  [write_stmt ::= WRITE (*) exp , {EOF ELSE END UNTIL SEMI }]
+  [exp ::= (*) simple_exp EQ simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) LPAREN exp RPAREN , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [term ::= (*) term TIMES factor , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [simple_exp ::= (*) simple_exp PLUS term , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS SEMI }]
+  [exp ::= (*) simple_exp GT simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) ID , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [term ::= (*) factor , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [simple_exp ::= (*) term , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS SEMI }]
+}
+transition on exp to state [25]
+transition on LPAREN to state [24]
+transition on simple_exp to state [23]
+transition on term to state [22]
+transition on factor to state [21]
+transition on NUM to state [20]
+transition on ID to state [19]
+
+-------------------
+lalr_state [13]: {
+  [stmt_seq ::= error (*) SEMI stmt , {EOF ELSE END UNTIL SEMI }]
+}
+transition on SEMI to state [17]
+
+-------------------
+lalr_state [14]: {
+  [program ::= stmt_seq (*) , {EOF }]
+  [stmt_seq ::= stmt_seq (*) SEMI stmt , {EOF SEMI }]
+}
+transition on SEMI to state [15]
+
+-------------------
+lalr_state [15]: {
+  [assign_stmt ::= (*) ID ASSIGN exp , {EOF ELSE END UNTIL SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) assign_stmt , {EOF ELSE END UNTIL SEMI }]
+  [write_stmt ::= (*) WRITE exp , {EOF ELSE END UNTIL SEMI }]
+  [repeat_stmt ::= (*) REPEAT stmt_seq UNTIL exp , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) write_stmt , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) repeat_stmt , {EOF ELSE END UNTIL SEMI }]
+  [read_stmt ::= (*) READ ID , {EOF ELSE END UNTIL SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq ELSE stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [stmt_seq ::= stmt_seq SEMI (*) stmt , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) read_stmt , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) if_stmt , {EOF ELSE END UNTIL SEMI }]
+}
+transition on WRITE to state [12]
+transition on ID to state [11]
+transition on IF to state [10]
+transition on read_stmt to state [9]
+transition on assign_stmt to state [7]
+transition on stmt to state [16]
+transition on write_stmt to state [5]
+transition on if_stmt to state [4]
+transition on repeat_stmt to state [3]
+transition on REPEAT to state [2]
+transition on READ to state [1]
+
+-------------------
+lalr_state [16]: {
+  [stmt_seq ::= stmt_seq SEMI stmt (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [17]: {
+  [assign_stmt ::= (*) ID ASSIGN exp , {EOF ELSE END UNTIL SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [stmt_seq ::= error SEMI (*) stmt , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) assign_stmt , {EOF ELSE END UNTIL SEMI }]
+  [write_stmt ::= (*) WRITE exp , {EOF ELSE END UNTIL SEMI }]
+  [repeat_stmt ::= (*) REPEAT stmt_seq UNTIL exp , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) write_stmt , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) repeat_stmt , {EOF ELSE END UNTIL SEMI }]
+  [read_stmt ::= (*) READ ID , {EOF ELSE END UNTIL SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq ELSE stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) read_stmt , {EOF ELSE END UNTIL SEMI }]
+  [stmt ::= (*) if_stmt , {EOF ELSE END UNTIL SEMI }]
+}
+transition on WRITE to state [12]
+transition on ID to state [11]
+transition on IF to state [10]
+transition on read_stmt to state [9]
+transition on assign_stmt to state [7]
+transition on stmt to state [18]
+transition on write_stmt to state [5]
+transition on if_stmt to state [4]
+transition on repeat_stmt to state [3]
+transition on REPEAT to state [2]
+transition on READ to state [1]
+
+-------------------
+lalr_state [18]: {
+  [stmt_seq ::= error SEMI stmt (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [19]: {
+  [factor ::= ID (*) , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+
+-------------------
+lalr_state [20]: {
+  [factor ::= NUM (*) , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+
+-------------------
+lalr_state [21]: {
+  [term ::= factor (*) , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+
+-------------------
+lalr_state [22]: {
+  [term ::= term (*) TIMES factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= term (*) , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS RPAREN SEMI }]
+  [term ::= term (*) OVER factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+transition on TIMES to state [35]
+transition on OVER to state [34]
+
+-------------------
+lalr_state [23]: {
+  [simple_exp ::= simple_exp (*) PLUS term , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS RPAREN SEMI }]
+  [exp ::= simple_exp (*) GT simple_exp , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+  [exp ::= simple_exp (*) , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+  [exp ::= simple_exp (*) LT simple_exp , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+  [simple_exp ::= simple_exp (*) MINUS term , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS RPAREN SEMI }]
+  [exp ::= simple_exp (*) EQ simple_exp , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+}
+transition on MINUS to state [32]
+transition on PLUS to state [31]
+transition on GT to state [30]
+transition on LT to state [29]
+transition on EQ to state [28]
+
+-------------------
+lalr_state [24]: {
+  [exp ::= (*) simple_exp , {RPAREN }]
+  [exp ::= (*) simple_exp LT simple_exp , {RPAREN }]
+  [factor ::= (*) NUM , {EQ LT GT PLUS MINUS TIMES OVER RPAREN }]
+  [term ::= (*) term OVER factor , {EQ LT GT PLUS MINUS TIMES OVER RPAREN }]
+  [simple_exp ::= (*) simple_exp MINUS term , {EQ LT GT PLUS MINUS RPAREN }]
+  [exp ::= (*) simple_exp EQ simple_exp , {RPAREN }]
+  [factor ::= LPAREN (*) exp RPAREN , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) LPAREN exp RPAREN , {EQ LT GT PLUS MINUS TIMES OVER RPAREN }]
+  [term ::= (*) term TIMES factor , {EQ LT GT PLUS MINUS TIMES OVER RPAREN }]
+  [simple_exp ::= (*) simple_exp PLUS term , {EQ LT GT PLUS MINUS RPAREN }]
+  [exp ::= (*) simple_exp GT simple_exp , {RPAREN }]
+  [factor ::= (*) ID , {EQ LT GT PLUS MINUS TIMES OVER RPAREN }]
+  [term ::= (*) factor , {EQ LT GT PLUS MINUS TIMES OVER RPAREN }]
+  [simple_exp ::= (*) term , {EQ LT GT PLUS MINUS RPAREN }]
+}
+transition on exp to state [26]
+transition on LPAREN to state [24]
+transition on simple_exp to state [23]
+transition on term to state [22]
+transition on factor to state [21]
+transition on NUM to state [20]
+transition on ID to state [19]
+
+-------------------
+lalr_state [25]: {
+  [write_stmt ::= WRITE exp (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [26]: {
+  [factor ::= LPAREN exp (*) RPAREN , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+transition on RPAREN to state [27]
+
+-------------------
+lalr_state [27]: {
+  [factor ::= LPAREN exp RPAREN (*) , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+
+-------------------
+lalr_state [28]: {
+  [factor ::= (*) NUM , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [exp ::= simple_exp EQ (*) simple_exp , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+  [term ::= (*) term OVER factor , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= (*) simple_exp MINUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+  [factor ::= (*) LPAREN exp RPAREN , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) term TIMES factor , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= (*) simple_exp PLUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+  [factor ::= (*) ID , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) factor , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= (*) term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+}
+transition on LPAREN to state [24]
+transition on simple_exp to state [41]
+transition on term to state [22]
+transition on factor to state [21]
+transition on NUM to state [20]
+transition on ID to state [19]
+
+-------------------
+lalr_state [29]: {
+  [factor ::= (*) NUM , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) term OVER factor , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= (*) simple_exp MINUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+  [factor ::= (*) LPAREN exp RPAREN , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) term TIMES factor , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= (*) simple_exp PLUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+  [factor ::= (*) ID , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) factor , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [exp ::= simple_exp LT (*) simple_exp , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+  [simple_exp ::= (*) term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+}
+transition on LPAREN to state [24]
+transition on simple_exp to state [40]
+transition on term to state [22]
+transition on factor to state [21]
+transition on NUM to state [20]
+transition on ID to state [19]
+
+-------------------
+lalr_state [30]: {
+  [factor ::= (*) NUM , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) term OVER factor , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= (*) simple_exp MINUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+  [factor ::= (*) LPAREN exp RPAREN , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [exp ::= simple_exp GT (*) simple_exp , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+  [term ::= (*) term TIMES factor , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= (*) simple_exp PLUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+  [factor ::= (*) ID , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) factor , {EOF THEN ELSE END UNTIL PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= (*) term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+}
+transition on LPAREN to state [24]
+transition on simple_exp to state [39]
+transition on term to state [22]
+transition on factor to state [21]
+transition on NUM to state [20]
+transition on ID to state [19]
+
+-------------------
+lalr_state [31]: {
+  [factor ::= (*) LPAREN exp RPAREN , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= simple_exp PLUS (*) term , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS RPAREN SEMI }]
+  [term ::= (*) term TIMES factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) ID , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) NUM , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) term OVER factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+transition on LPAREN to state [24]
+transition on term to state [38]
+transition on factor to state [21]
+transition on ID to state [19]
+transition on NUM to state [20]
+
+-------------------
+lalr_state [32]: {
+  [factor ::= (*) LPAREN exp RPAREN , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) term TIMES factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) ID , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= (*) factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) NUM , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= simple_exp MINUS (*) term , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS RPAREN SEMI }]
+  [term ::= (*) term OVER factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+transition on LPAREN to state [24]
+transition on term to state [33]
+transition on factor to state [21]
+transition on ID to state [19]
+transition on NUM to state [20]
+
+-------------------
+lalr_state [33]: {
+  [term ::= term (*) TIMES factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [simple_exp ::= simple_exp MINUS term (*) , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS RPAREN SEMI }]
+  [term ::= term (*) OVER factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+transition on TIMES to state [35]
+transition on OVER to state [34]
+
+-------------------
+lalr_state [34]: {
+  [factor ::= (*) LPAREN exp RPAREN , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) ID , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= term OVER (*) factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) NUM , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+transition on LPAREN to state [24]
+transition on factor to state [37]
+transition on ID to state [19]
+transition on NUM to state [20]
+
+-------------------
+lalr_state [35]: {
+  [term ::= term TIMES (*) factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) LPAREN exp RPAREN , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) ID , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [factor ::= (*) NUM , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+transition on LPAREN to state [24]
+transition on factor to state [36]
+transition on ID to state [19]
+transition on NUM to state [20]
+
+-------------------
+lalr_state [36]: {
+  [term ::= term TIMES factor (*) , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+
+-------------------
+lalr_state [37]: {
+  [term ::= term OVER factor (*) , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+
+-------------------
+lalr_state [38]: {
+  [simple_exp ::= simple_exp PLUS term (*) , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS RPAREN SEMI }]
+  [term ::= term (*) TIMES factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+  [term ::= term (*) OVER factor , {EOF THEN ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER RPAREN SEMI }]
+}
+transition on TIMES to state [35]
+transition on OVER to state [34]
+
+-------------------
+lalr_state [39]: {
+  [exp ::= simple_exp GT simple_exp (*) , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+  [simple_exp ::= simple_exp (*) PLUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+  [simple_exp ::= simple_exp (*) MINUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+}
+transition on MINUS to state [32]
+transition on PLUS to state [31]
+
+-------------------
+lalr_state [40]: {
+  [simple_exp ::= simple_exp (*) PLUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+  [exp ::= simple_exp LT simple_exp (*) , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+  [simple_exp ::= simple_exp (*) MINUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+}
+transition on MINUS to state [32]
+transition on PLUS to state [31]
+
+-------------------
+lalr_state [41]: {
+  [simple_exp ::= simple_exp (*) PLUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+  [exp ::= simple_exp EQ simple_exp (*) , {EOF THEN ELSE END UNTIL RPAREN SEMI }]
+  [simple_exp ::= simple_exp (*) MINUS term , {EOF THEN ELSE END UNTIL PLUS MINUS RPAREN SEMI }]
+}
+transition on MINUS to state [32]
+transition on PLUS to state [31]
+
+-------------------
+lalr_state [42]: {
+  [assign_stmt ::= ID ASSIGN (*) exp , {EOF ELSE END UNTIL SEMI }]
+  [exp ::= (*) simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [exp ::= (*) simple_exp LT simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) NUM , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [term ::= (*) term OVER factor , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [simple_exp ::= (*) simple_exp MINUS term , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS SEMI }]
+  [exp ::= (*) simple_exp EQ simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) LPAREN exp RPAREN , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [term ::= (*) term TIMES factor , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [simple_exp ::= (*) simple_exp PLUS term , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS SEMI }]
+  [exp ::= (*) simple_exp GT simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) ID , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [term ::= (*) factor , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [simple_exp ::= (*) term , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS SEMI }]
+}
+transition on exp to state [43]
+transition on LPAREN to state [24]
+transition on simple_exp to state [23]
+transition on term to state [22]
+transition on factor to state [21]
+transition on NUM to state [20]
+transition on ID to state [19]
+
+-------------------
+lalr_state [43]: {
+  [assign_stmt ::= ID ASSIGN exp (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [44]: {
+  [if_stmt ::= IF exp (*) THEN stmt_seq ELSE stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [if_stmt ::= IF exp (*) THEN stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+}
+transition on THEN to state [45]
+
+-------------------
+lalr_state [45]: {
+  [if_stmt ::= IF exp THEN (*) stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [assign_stmt ::= (*) ID ASSIGN exp , {ELSE END SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq END , {ELSE END SEMI }]
+  [stmt ::= (*) assign_stmt , {ELSE END SEMI }]
+  [stmt_seq ::= (*) error SEMI stmt , {ELSE END SEMI }]
+  [write_stmt ::= (*) WRITE exp , {ELSE END SEMI }]
+  [repeat_stmt ::= (*) REPEAT stmt_seq UNTIL exp , {ELSE END SEMI }]
+  [stmt ::= (*) write_stmt , {ELSE END SEMI }]
+  [stmt ::= (*) repeat_stmt , {ELSE END SEMI }]
+  [stmt_seq ::= (*) stmt , {ELSE END SEMI }]
+  [if_stmt ::= IF exp THEN (*) stmt_seq ELSE stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [read_stmt ::= (*) READ ID , {ELSE END SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq ELSE stmt_seq END , {ELSE END SEMI }]
+  [stmt ::= (*) read_stmt , {ELSE END SEMI }]
+  [stmt ::= (*) if_stmt , {ELSE END SEMI }]
+  [stmt_seq ::= (*) stmt_seq SEMI stmt , {ELSE END SEMI }]
+}
+transition on stmt_seq to state [46]
+transition on error to state [13]
+transition on WRITE to state [12]
+transition on ID to state [11]
+transition on IF to state [10]
+transition on read_stmt to state [9]
+transition on assign_stmt to state [7]
+transition on stmt to state [6]
+transition on write_stmt to state [5]
+transition on if_stmt to state [4]
+transition on repeat_stmt to state [3]
+transition on REPEAT to state [2]
+transition on READ to state [1]
+
+-------------------
+lalr_state [46]: {
+  [if_stmt ::= IF exp THEN stmt_seq (*) ELSE stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [if_stmt ::= IF exp THEN stmt_seq (*) END , {EOF ELSE END UNTIL SEMI }]
+  [stmt_seq ::= stmt_seq (*) SEMI stmt , {ELSE END SEMI }]
+}
+transition on END to state [48]
+transition on SEMI to state [15]
+transition on ELSE to state [47]
+
+-------------------
+lalr_state [47]: {
+  [assign_stmt ::= (*) ID ASSIGN exp , {END SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq END , {END SEMI }]
+  [stmt ::= (*) assign_stmt , {END SEMI }]
+  [stmt_seq ::= (*) error SEMI stmt , {END SEMI }]
+  [write_stmt ::= (*) WRITE exp , {END SEMI }]
+  [repeat_stmt ::= (*) REPEAT stmt_seq UNTIL exp , {END SEMI }]
+  [stmt ::= (*) write_stmt , {END SEMI }]
+  [stmt ::= (*) repeat_stmt , {END SEMI }]
+  [stmt_seq ::= (*) stmt , {END SEMI }]
+  [if_stmt ::= IF exp THEN stmt_seq ELSE (*) stmt_seq END , {EOF ELSE END UNTIL SEMI }]
+  [read_stmt ::= (*) READ ID , {END SEMI }]
+  [if_stmt ::= (*) IF exp THEN stmt_seq ELSE stmt_seq END , {END SEMI }]
+  [stmt ::= (*) read_stmt , {END SEMI }]
+  [stmt ::= (*) if_stmt , {END SEMI }]
+  [stmt_seq ::= (*) stmt_seq SEMI stmt , {END SEMI }]
+}
+transition on stmt_seq to state [49]
+transition on error to state [13]
+transition on WRITE to state [12]
+transition on ID to state [11]
+transition on IF to state [10]
+transition on read_stmt to state [9]
+transition on assign_stmt to state [7]
+transition on stmt to state [6]
+transition on write_stmt to state [5]
+transition on if_stmt to state [4]
+transition on repeat_stmt to state [3]
+transition on REPEAT to state [2]
+transition on READ to state [1]
+
+-------------------
+lalr_state [48]: {
+  [if_stmt ::= IF exp THEN stmt_seq END (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [49]: {
+  [if_stmt ::= IF exp THEN stmt_seq ELSE stmt_seq (*) END , {EOF ELSE END UNTIL SEMI }]
+  [stmt_seq ::= stmt_seq (*) SEMI stmt , {END SEMI }]
+}
+transition on END to state [50]
+transition on SEMI to state [15]
+
+-------------------
+lalr_state [50]: {
+  [if_stmt ::= IF exp THEN stmt_seq ELSE stmt_seq END (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [51]: {
+  [$START ::= program EOF (*) , {EOF }]
+}
+
+-------------------
+lalr_state [52]: {
+  [repeat_stmt ::= REPEAT stmt_seq (*) UNTIL exp , {EOF ELSE END UNTIL SEMI }]
+  [stmt_seq ::= stmt_seq (*) SEMI stmt , {UNTIL SEMI }]
+}
+transition on UNTIL to state [53]
+transition on SEMI to state [15]
+
+-------------------
+lalr_state [53]: {
+  [exp ::= (*) simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [exp ::= (*) simple_exp LT simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) NUM , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [term ::= (*) term OVER factor , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [repeat_stmt ::= REPEAT stmt_seq UNTIL (*) exp , {EOF ELSE END UNTIL SEMI }]
+  [simple_exp ::= (*) simple_exp MINUS term , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS SEMI }]
+  [exp ::= (*) simple_exp EQ simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) LPAREN exp RPAREN , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [term ::= (*) term TIMES factor , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [simple_exp ::= (*) simple_exp PLUS term , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS SEMI }]
+  [exp ::= (*) simple_exp GT simple_exp , {EOF ELSE END UNTIL SEMI }]
+  [factor ::= (*) ID , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [term ::= (*) factor , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS TIMES OVER SEMI }]
+  [simple_exp ::= (*) term , {EOF ELSE END UNTIL EQ LT GT PLUS MINUS SEMI }]
+}
+transition on exp to state [54]
+transition on LPAREN to state [24]
+transition on simple_exp to state [23]
+transition on term to state [22]
+transition on factor to state [21]
+transition on NUM to state [20]
+transition on ID to state [19]
+
+-------------------
+lalr_state [54]: {
+  [repeat_stmt ::= REPEAT stmt_seq UNTIL exp (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+lalr_state [55]: {
+  [read_stmt ::= READ ID (*) , {EOF ELSE END UNTIL SEMI }]
+}
+
+-------------------
+-------- ACTION_TABLE --------
+From state #0
+ [term 1:SHIFT(to state 13)] [term 2:SHIFT(to state 10)]
+ [term 6:SHIFT(to state 2)] [term 8:SHIFT(to state 1)]
+ [term 9:SHIFT(to state 12)] [term 21:SHIFT(to state 11)]
+From state #1
+ [term 21:SHIFT(to state 55)]
+From state #2
+ [term 1:SHIFT(to state 13)] [term 2:SHIFT(to state 10)]
+ [term 6:SHIFT(to state 2)] [term 8:SHIFT(to state 1)]
+ [term 9:SHIFT(to state 12)] [term 21:SHIFT(to state 11)]
+From state #3
+ [term 0:REDUCE(with prod 7)] [term 4:REDUCE(with prod 7)]
+ [term 5:REDUCE(with prod 7)] [term 7:REDUCE(with prod 7)]
+ [term 20:REDUCE(with prod 7)]
+From state #4
+ [term 0:REDUCE(with prod 6)] [term 4:REDUCE(with prod 6)]
+ [term 5:REDUCE(with prod 6)] [term 7:REDUCE(with prod 6)]
+ [term 20:REDUCE(with prod 6)]
+From state #5
+ [term 0:REDUCE(with prod 10)] [term 4:REDUCE(with prod 10)]
+ [term 5:REDUCE(with prod 10)] [term 7:REDUCE(with prod 10)]
+ [term 20:REDUCE(with prod 10)]
+From state #6
+ [term 0:REDUCE(with prod 4)] [term 4:REDUCE(with prod 4)]
+ [term 5:REDUCE(with prod 4)] [term 7:REDUCE(with prod 4)]
+ [term 20:REDUCE(with prod 4)]
+From state #7
+ [term 0:REDUCE(with prod 8)] [term 4:REDUCE(with prod 8)]
+ [term 5:REDUCE(with prod 8)] [term 7:REDUCE(with prod 8)]
+ [term 20:REDUCE(with prod 8)]
+From state #8
+ [term 0:SHIFT(to state 51)]
+From state #9
+ [term 0:REDUCE(with prod 9)] [term 4:REDUCE(with prod 9)]
+ [term 5:REDUCE(with prod 9)] [term 7:REDUCE(with prod 9)]
+ [term 20:REDUCE(with prod 9)]
+From state #10
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #11
+ [term 10:SHIFT(to state 42)]
+From state #12
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #13
+ [term 20:SHIFT(to state 17)]
+From state #14
+ [term 0:REDUCE(with prod 2)] [term 20:SHIFT(to state 15)]
+From state #15
+ [term 2:SHIFT(to state 10)] [term 6:SHIFT(to state 2)]
+ [term 8:SHIFT(to state 1)] [term 9:SHIFT(to state 12)]
+ [term 21:SHIFT(to state 11)]
+From state #16
+ [term 0:REDUCE(with prod 3)] [term 4:REDUCE(with prod 3)]
+ [term 5:REDUCE(with prod 3)] [term 7:REDUCE(with prod 3)]
+ [term 20:REDUCE(with prod 3)]
+From state #17
+ [term 2:SHIFT(to state 10)] [term 6:SHIFT(to state 2)]
+ [term 8:SHIFT(to state 1)] [term 9:SHIFT(to state 12)]
+ [term 21:SHIFT(to state 11)]
+From state #18
+ [term 0:REDUCE(with prod 5)] [term 4:REDUCE(with prod 5)]
+ [term 5:REDUCE(with prod 5)] [term 7:REDUCE(with prod 5)]
+ [term 20:REDUCE(with prod 5)]
+From state #19
+ [term 0:REDUCE(with prod 29)] [term 3:REDUCE(with prod 29)]
+ [term 4:REDUCE(with prod 29)] [term 5:REDUCE(with prod 29)]
+ [term 7:REDUCE(with prod 29)] [term 11:REDUCE(with prod 29)]
+ [term 12:REDUCE(with prod 29)] [term 13:REDUCE(with prod 29)]
+ [term 14:REDUCE(with prod 29)] [term 15:REDUCE(with prod 29)]
+ [term 16:REDUCE(with prod 29)] [term 17:REDUCE(with prod 29)]
+ [term 19:REDUCE(with prod 29)] [term 20:REDUCE(with prod 29)]
+From state #20
+ [term 0:REDUCE(with prod 28)] [term 3:REDUCE(with prod 28)]
+ [term 4:REDUCE(with prod 28)] [term 5:REDUCE(with prod 28)]
+ [term 7:REDUCE(with prod 28)] [term 11:REDUCE(with prod 28)]
+ [term 12:REDUCE(with prod 28)] [term 13:REDUCE(with prod 28)]
+ [term 14:REDUCE(with prod 28)] [term 15:REDUCE(with prod 28)]
+ [term 16:REDUCE(with prod 28)] [term 17:REDUCE(with prod 28)]
+ [term 19:REDUCE(with prod 28)] [term 20:REDUCE(with prod 28)]
+From state #21
+ [term 0:REDUCE(with prod 26)] [term 3:REDUCE(with prod 26)]
+ [term 4:REDUCE(with prod 26)] [term 5:REDUCE(with prod 26)]
+ [term 7:REDUCE(with prod 26)] [term 11:REDUCE(with prod 26)]
+ [term 12:REDUCE(with prod 26)] [term 13:REDUCE(with prod 26)]
+ [term 14:REDUCE(with prod 26)] [term 15:REDUCE(with prod 26)]
+ [term 16:REDUCE(with prod 26)] [term 17:REDUCE(with prod 26)]
+ [term 19:REDUCE(with prod 26)] [term 20:REDUCE(with prod 26)]
+From state #22
+ [term 0:REDUCE(with prod 23)] [term 3:REDUCE(with prod 23)]
+ [term 4:REDUCE(with prod 23)] [term 5:REDUCE(with prod 23)]
+ [term 7:REDUCE(with prod 23)] [term 11:REDUCE(with prod 23)]
+ [term 12:REDUCE(with prod 23)] [term 13:REDUCE(with prod 23)]
+ [term 14:REDUCE(with prod 23)] [term 15:REDUCE(with prod 23)]
+ [term 16:SHIFT(to state 35)] [term 17:SHIFT(to state 34)]
+ [term 19:REDUCE(with prod 23)] [term 20:REDUCE(with prod 23)]
+From state #23
+ [term 0:REDUCE(with prod 20)] [term 3:REDUCE(with prod 20)]
+ [term 4:REDUCE(with prod 20)] [term 5:REDUCE(with prod 20)]
+ [term 7:REDUCE(with prod 20)] [term 11:SHIFT(to state 28)]
+ [term 12:SHIFT(to state 29)] [term 13:SHIFT(to state 30)]
+ [term 14:SHIFT(to state 31)] [term 15:SHIFT(to state 32)]
+ [term 19:REDUCE(with prod 20)] [term 20:REDUCE(with prod 20)]
+From state #24
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #25
+ [term 0:REDUCE(with prod 16)] [term 4:REDUCE(with prod 16)]
+ [term 5:REDUCE(with prod 16)] [term 7:REDUCE(with prod 16)]
+ [term 20:REDUCE(with prod 16)]
+From state #26
+ [term 19:SHIFT(to state 27)]
+From state #27
+ [term 0:REDUCE(with prod 27)] [term 3:REDUCE(with prod 27)]
+ [term 4:REDUCE(with prod 27)] [term 5:REDUCE(with prod 27)]
+ [term 7:REDUCE(with prod 27)] [term 11:REDUCE(with prod 27)]
+ [term 12:REDUCE(with prod 27)] [term 13:REDUCE(with prod 27)]
+ [term 14:REDUCE(with prod 27)] [term 15:REDUCE(with prod 27)]
+ [term 16:REDUCE(with prod 27)] [term 17:REDUCE(with prod 27)]
+ [term 19:REDUCE(with prod 27)] [term 20:REDUCE(with prod 27)]
+From state #28
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #29
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #30
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #31
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #32
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #33
+ [term 0:REDUCE(with prod 22)] [term 3:REDUCE(with prod 22)]
+ [term 4:REDUCE(with prod 22)] [term 5:REDUCE(with prod 22)]
+ [term 7:REDUCE(with prod 22)] [term 11:REDUCE(with prod 22)]
+ [term 12:REDUCE(with prod 22)] [term 13:REDUCE(with prod 22)]
+ [term 14:REDUCE(with prod 22)] [term 15:REDUCE(with prod 22)]
+ [term 16:SHIFT(to state 35)] [term 17:SHIFT(to state 34)]
+ [term 19:REDUCE(with prod 22)] [term 20:REDUCE(with prod 22)]
+From state #34
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #35
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #36
+ [term 0:REDUCE(with prod 24)] [term 3:REDUCE(with prod 24)]
+ [term 4:REDUCE(with prod 24)] [term 5:REDUCE(with prod 24)]
+ [term 7:REDUCE(with prod 24)] [term 11:REDUCE(with prod 24)]
+ [term 12:REDUCE(with prod 24)] [term 13:REDUCE(with prod 24)]
+ [term 14:REDUCE(with prod 24)] [term 15:REDUCE(with prod 24)]
+ [term 16:REDUCE(with prod 24)] [term 17:REDUCE(with prod 24)]
+ [term 19:REDUCE(with prod 24)] [term 20:REDUCE(with prod 24)]
+From state #37
+ [term 0:REDUCE(with prod 25)] [term 3:REDUCE(with prod 25)]
+ [term 4:REDUCE(with prod 25)] [term 5:REDUCE(with prod 25)]
+ [term 7:REDUCE(with prod 25)] [term 11:REDUCE(with prod 25)]
+ [term 12:REDUCE(with prod 25)] [term 13:REDUCE(with prod 25)]
+ [term 14:REDUCE(with prod 25)] [term 15:REDUCE(with prod 25)]
+ [term 16:REDUCE(with prod 25)] [term 17:REDUCE(with prod 25)]
+ [term 19:REDUCE(with prod 25)] [term 20:REDUCE(with prod 25)]
+From state #38
+ [term 0:REDUCE(with prod 21)] [term 3:REDUCE(with prod 21)]
+ [term 4:REDUCE(with prod 21)] [term 5:REDUCE(with prod 21)]
+ [term 7:REDUCE(with prod 21)] [term 11:REDUCE(with prod 21)]
+ [term 12:REDUCE(with prod 21)] [term 13:REDUCE(with prod 21)]
+ [term 14:REDUCE(with prod 21)] [term 15:REDUCE(with prod 21)]
+ [term 16:SHIFT(to state 35)] [term 17:SHIFT(to state 34)]
+ [term 19:REDUCE(with prod 21)] [term 20:REDUCE(with prod 21)]
+From state #39
+ [term 0:REDUCE(with prod 18)] [term 3:REDUCE(with prod 18)]
+ [term 4:REDUCE(with prod 18)] [term 5:REDUCE(with prod 18)]
+ [term 7:REDUCE(with prod 18)] [term 14:SHIFT(to state 31)]
+ [term 15:SHIFT(to state 32)] [term 19:REDUCE(with prod 18)]
+ [term 20:REDUCE(with prod 18)]
+From state #40
+ [term 0:REDUCE(with prod 17)] [term 3:REDUCE(with prod 17)]
+ [term 4:REDUCE(with prod 17)] [term 5:REDUCE(with prod 17)]
+ [term 7:REDUCE(with prod 17)] [term 14:SHIFT(to state 31)]
+ [term 15:SHIFT(to state 32)] [term 19:REDUCE(with prod 17)]
+ [term 20:REDUCE(with prod 17)]
+From state #41
+ [term 0:REDUCE(with prod 19)] [term 3:REDUCE(with prod 19)]
+ [term 4:REDUCE(with prod 19)] [term 5:REDUCE(with prod 19)]
+ [term 7:REDUCE(with prod 19)] [term 14:SHIFT(to state 31)]
+ [term 15:SHIFT(to state 32)] [term 19:REDUCE(with prod 19)]
+ [term 20:REDUCE(with prod 19)]
+From state #42
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #43
+ [term 0:REDUCE(with prod 14)] [term 4:REDUCE(with prod 14)]
+ [term 5:REDUCE(with prod 14)] [term 7:REDUCE(with prod 14)]
+ [term 20:REDUCE(with prod 14)]
+From state #44
+ [term 3:SHIFT(to state 45)]
+From state #45
+ [term 1:SHIFT(to state 13)] [term 2:SHIFT(to state 10)]
+ [term 6:SHIFT(to state 2)] [term 8:SHIFT(to state 1)]
+ [term 9:SHIFT(to state 12)] [term 21:SHIFT(to state 11)]
+From state #46
+ [term 4:SHIFT(to state 47)] [term 5:SHIFT(to state 48)]
+ [term 20:SHIFT(to state 15)]
+From state #47
+ [term 1:SHIFT(to state 13)] [term 2:SHIFT(to state 10)]
+ [term 6:SHIFT(to state 2)] [term 8:SHIFT(to state 1)]
+ [term 9:SHIFT(to state 12)] [term 21:SHIFT(to state 11)]
+From state #48
+ [term 0:REDUCE(with prod 11)] [term 4:REDUCE(with prod 11)]
+ [term 5:REDUCE(with prod 11)] [term 7:REDUCE(with prod 11)]
+ [term 20:REDUCE(with prod 11)]
+From state #49
+ [term 5:SHIFT(to state 50)] [term 20:SHIFT(to state 15)]
+From state #50
+ [term 0:REDUCE(with prod 12)] [term 4:REDUCE(with prod 12)]
+ [term 5:REDUCE(with prod 12)] [term 7:REDUCE(with prod 12)]
+ [term 20:REDUCE(with prod 12)]
+From state #51
+ [term 0:REDUCE(with prod 0)]
+From state #52
+ [term 7:SHIFT(to state 53)] [term 20:SHIFT(to state 15)]
+From state #53
+ [term 18:SHIFT(to state 24)] [term 21:SHIFT(to state 19)]
+ [term 22:SHIFT(to state 20)]
+From state #54
+ [term 0:REDUCE(with prod 13)] [term 4:REDUCE(with prod 13)]
+ [term 5:REDUCE(with prod 13)] [term 7:REDUCE(with prod 13)]
+ [term 20:REDUCE(with prod 13)]
+From state #55
+ [term 0:REDUCE(with prod 15)] [term 4:REDUCE(with prod 15)]
+ [term 5:REDUCE(with prod 15)] [term 7:REDUCE(with prod 15)]
+ [term 20:REDUCE(with prod 15)]
+------------------------------
+-------- REDUCE_TABLE --------
+From state #0
+ [non term 1->state 8] [non term 2->state 14] [non term 3->state 6]
+ [non term 4->state 4] [non term 5->state 3] [non term 6->state 7]
+ [non term 7->state 9] [non term 8->state 5]
+From state #1
+From state #2
+ [non term 2->state 52] [non term 3->state 6] [non term 4->state 4]
+ [non term 5->state 3] [non term 6->state 7] [non term 7->state 9]
+ [non term 8->state 5]
+From state #3
+From state #4
+From state #5
+From state #6
+From state #7
+From state #8
+From state #9
+From state #10
+ [non term 9->state 44] [non term 10->state 23] [non term 11->state 22]
+ [non term 12->state 21]
+From state #11
+From state #12
+ [non term 9->state 25] [non term 10->state 23] [non term 11->state 22]
+ [non term 12->state 21]
+From state #13
+From state #14
+From state #15
+ [non term 3->state 16] [non term 4->state 4] [non term 5->state 3]
+ [non term 6->state 7] [non term 7->state 9] [non term 8->state 5]
+From state #16
+From state #17
+ [non term 3->state 18] [non term 4->state 4] [non term 5->state 3]
+ [non term 6->state 7] [non term 7->state 9] [non term 8->state 5]
+From state #18
+From state #19
+From state #20
+From state #21
+From state #22
+From state #23
+From state #24
+ [non term 9->state 26] [non term 10->state 23] [non term 11->state 22]
+ [non term 12->state 21]
+From state #25
+From state #26
+From state #27
+From state #28
+ [non term 10->state 41] [non term 11->state 22] [non term 12->state 21]
+From state #29
+ [non term 10->state 40] [non term 11->state 22] [non term 12->state 21]
+From state #30
+ [non term 10->state 39] [non term 11->state 22] [non term 12->state 21]
+From state #31
+ [non term 11->state 38] [non term 12->state 21]
+From state #32
+ [non term 11->state 33] [non term 12->state 21]
+From state #33
+From state #34
+ [non term 12->state 37]
+From state #35
+ [non term 12->state 36]
+From state #36
+From state #37
+From state #38
+From state #39
+From state #40
+From state #41
+From state #42
+ [non term 9->state 43] [non term 10->state 23] [non term 11->state 22]
+ [non term 12->state 21]
+From state #43
+From state #44
+From state #45
+ [non term 2->state 46] [non term 3->state 6] [non term 4->state 4]
+ [non term 5->state 3] [non term 6->state 7] [non term 7->state 9]
+ [non term 8->state 5]
+From state #46
+From state #47
+ [non term 2->state 49] [non term 3->state 6] [non term 4->state 4]
+ [non term 5->state 3] [non term 6->state 7] [non term 7->state 9]
+ [non term 8->state 5]
+From state #48
+From state #49
+From state #50
+From state #51
+From state #52
+From state #53
+ [non term 9->state 54] [non term 10->state 23] [non term 11->state 22]
+ [non term 12->state 21]
+From state #54
+From state #55
+-----------------------------
+------- CUP v0.11a beta 20060608 Parser Generation Summary -------
+  0 errors and 2 warnings
+  24 terminals, 13 non-terminals, and 30 productions declared, 
+  producing 56 unique parse states.
+  1 terminal declared but not used.
+  0 non-terminal declared but not used.
+  0 productions never reduced.
+  0 conflicts detected (3 expected).
+  Code written to "parser.java", and "sym.java".
+---------------------------------------------------- (v0.11a beta 20060608)
+jflex tiny.flex
+Reading "tiny.flex"
+Constructing NFA : 98 states in NFA
+Converting NFA to DFA : 
+........................................................
+58 states before minimization, 50 states in minimized DFA
+Writing code to "Lexer.java"
+javac -classpath /usr/share/java/cup.jar:.  Main.java absyn/Absyn.java absyn/AssignExp.java absyn/Exp.java absyn/ExpList.java absyn/IfExp.java absyn/IntExp.java absyn/OpExp.java absyn/ReadExp.java absyn/RepeatExp.java absyn/VarExp.java absyn/WriteExp.java parser.java sym.java Lexer.java Scanner.java
+]0;fsong@nlp5: ~/nlp5/Teaching/465w18/java_tinyfsong@nlp5:~/nlp5/Teaching/465w18/java_tiny$ exit
+exit
+
+Script done on Tue 06 Feb 2018 02:49:37 PM EST
