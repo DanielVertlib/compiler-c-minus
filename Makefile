@@ -1,9 +1,8 @@
 JAVA=java
 JAVAC=javac
 JFLEX=jflex
-CLASSPATH=-classpath /usr/share/java/cup.jar:.
-#CUP=$(JAVA) $(CLASSPATH) java_cup.Main <
-CUP=cup
+CLASSPATH=-classpath /usr/cup.jar:.
+CUP=$(JAVA) $(CLASSPATH) java_cup.Main
 
 all: Main.class
 
