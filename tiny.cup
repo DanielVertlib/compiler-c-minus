@@ -3,27 +3,27 @@
   File Name: tiny.cup
   To Build: java java_cup.Main < tiny.cup
 */
-   
-   
+
+
 /* ----------------------Preliminary Declarations Section--------------------*/
-   
+
 /* Import the class java_cup.runtime.*  */
 //import java_cup.runtime.*;
 import absyn.*;
-   
+
 /* Parser code to change the way the parser reports errors (include
    line and column number of the error). */
 parser code {:
-    
+
     /* Change the method report_error so it will display the line and
        column of where the error occurred in the input as well as the
        reason for the error which is passed into the method in the
        String 'message'. */
     public void report_error(String message, Object info) {
-   
+
         /* Create a StringBuffer called 'm' with the string 'Error' in it. */
         StringBuffer m = new StringBuffer("Error");
-   
+
         /* Check if the information passed to the method is the same
            type as the type java_cup.runtime.Symbol. */
         if (info instanceof java_cup.runtime.Symbol) {
@@ -31,31 +31,31 @@ parser code {:
                information in the object info that is being typecasted
                as a java_cup.runtime.Symbol object. */
             java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
-   
+
             /* Check if the line number in the input is greater or
                equal to zero. */
-            if (s.left >= 0) {                
+            if (s.left >= 0) {
                 /* Add to the end of the StringBuffer error message
                    the line number of the error in the input. */
-                m.append(" in line "+(s.left+1));   
+                m.append(" in line "+(s.left+1));
                 /* Check if the column number in the input is greater
                    or equal to zero. */
-                if (s.right >= 0)                    
+                if (s.right >= 0)
                     /* Add to the end of the StringBuffer error message
                        the column number of the error in the input. */
                     m.append(", column "+(s.right+1));
             }
         }
-   
+
         /* Add to the end of the StringBuffer error message created in
            this method the message that was passed into this method. */
         m.append(" : "+message);
-   
+
         /* Print the contents of the StringBuffer 'm', which contains
            an error message, out on a line. */
         System.err.println(m);
     }
-   
+
     /* Change the method report_fatal_error so when it reports a fatal
        error it will display the line and column number of where the
        fatal error occurred in the input as well as the reason for the
@@ -70,25 +70,26 @@ parser code {:
     public static boolean SHOW_TREE = false;
 
 :};
-   
-   
+
+
 /* ------------Declaration of Terminals and Non Terminals Section----------- */
-   
-terminal IF, THEN, ELSE, END, REPEAT, UNTIL, READ, WRITE;
-terminal ASSIGN, EQ, LT, GT, PLUS, MINUS, TIMES, OVER, LPAREN, RPAREN, SEMI;
+
+terminal IF, ELSE, WHILE, RETURN, VOID, INT;
+terminal ASSIGN, EQ, NOTEQ, LT, LTOE, GT, GTOE, PLUS, MINUS, TIMES, OVER;
+terminal LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, SEMI, COMMA;
 terminal String ID, NUM;
 terminal ERROR;
-   
+
 non terminal Exp program1;
 non terminal ExpList program, stmt_seq;
 non terminal Exp stmt, if_stmt, repeat_stmt, assign_stmt, read_stmt, write_stmt;
-non terminal Exp exp, simple_exp, term, factor;   
+non terminal Exp exp, simple_exp, term, factor;
 
 /* ----------------------------Grammar Section-------------------- */
-   
+
 start with program;
 
-program1     ::= exp:e 
+program1     ::= exp:e
                  {: RESULT = e;
                     if (parser.SHOW_TREE) {
                        System.out.println("The abstract syntax tree is:");
@@ -104,7 +105,7 @@ program	     ::= stmt_seq:s
                  :}
                ;
 
-stmt_seq     ::= stmt_seq:s1 SEMI stmt:s2 
+stmt_seq     ::= stmt_seq:s1 SEMI stmt:s2
                  {: ExpList t = s1;
                     while( t.tail != null )
                       t = t.tail;
@@ -114,8 +115,8 @@ stmt_seq     ::= stmt_seq:s1 SEMI stmt:s2
                | stmt:s
                  {: RESULT = new ExpList(s, null); :}
                | error SEMI stmt:s
-                 {: parser.report_error("invalid", null); 
-                    RESULT = new ExpList(s, null); 
+                 {: parser.report_error("invalid", null);
+                    RESULT = new ExpList(s, null);
                  :}
                ;
 
@@ -142,7 +143,7 @@ repeat_stmt  ::= REPEAT:r stmt_seq:s UNTIL exp:e
                ;
 
 assign_stmt  ::= ID:i ASSIGN exp:e
-                 {: RESULT = new AssignExp(ileft, new VarExp(ileft, i), e); :} 
+                 {: RESULT = new AssignExp(ileft, new VarExp(ileft, i), e); :}
                ;
 
 read_stmt    ::= READ:r ID:i
