@@ -1,8 +1,9 @@
 package absyn;
 
 public class IntExp extends Exp {
-  public String value;
-  public IntExp( int pos, String value ) {
+  public int value;
+
+  public IntExp(int pos, int value) {
     this.pos = pos;
     this.value = value;
   }

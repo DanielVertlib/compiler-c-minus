@@ -91,17 +91,6 @@ non terminal CallExp call;
 
 //start rule from column 12
 
-//19 var --> ID | ID [ expression ]
-var        ::= ID:i
-             {:
-               RESULT = new VarExp(ileft, i, null);
-             :}
-           | ID:i LBRACKET exp:e RBRACKET
-             {:
-               RESULT = new VarExp(ileft, i, e);
-             :}
-           ;
-
 //27 call --> ID ( args )
 call       ::= ID:i LPAREN args:a RPAREN
              {:

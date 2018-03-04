@@ -1,9 +1,9 @@
 package absyn;
 
-public class VarExp extends Exp {
+public class SimpleVar extends Var {
   public String name;
 
-  public VarExp(int pos, String name) {
+  public SimpleVar(int pos, String name) {
     this.pos = pos;
     this.name = name;
   }

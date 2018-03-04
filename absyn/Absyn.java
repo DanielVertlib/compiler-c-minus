@@ -17,22 +17,26 @@ abstract public class Absyn {
   }
 
   static public void showTree( Exp tree, int spaces ) {
-    if( tree instanceof AssignExp )
+    if( tree instanceof NilExp )
+      showTree( (NilExp)tree, spaces );
+    else if( tree instanceof VarExp )
+      showTree( (VarExp)tree, spaces );
+    else if( tree instanceof IntExp )
+      showTree( (IntExp)tree, spaces );
+    else if( tree instanceof CallExp )
+      showTree( (CallExp)tree, spaces );
+    else if( tree instanceof OpExp )
+      showTree( (OpExp)tree, spaces );
+    else if( tree instanceof AssignExp )
       showTree( (AssignExp)tree, spaces );
     else if( tree instanceof IfExp )
       showTree( (IfExp)tree, spaces );
-    else if( tree instanceof IntExp )
-      showTree( (IntExp)tree, spaces );
-    else if( tree instanceof OpExp )
-      showTree( (OpExp)tree, spaces );
-    else if( tree instanceof ReadExp )
-      showTree( (ReadExp)tree, spaces );
-    else if( tree instanceof RepeatExp )
-      showTree( (RepeatExp)tree, spaces );
-    else if( tree instanceof VarExp )
-      showTree( (VarExp)tree, spaces );
-    else if( tree instanceof WriteExp )
-      showTree( (WriteExp)tree, spaces );
+    else if( tree instanceof WhileExp )
+      showTree( (WhileExp)tree, spaces );
+    else if( tree instanceof ReturnExp )
+      showTree( (ReturnExp)tree, spaces );
+    else if( tree instanceof CompoundExp )
+      showTree( (CompoundExp)tree, spaces );
     else {
       indent( spaces );
       System.out.println( "Illegal expression at line " + tree.pos  );
@@ -94,29 +98,9 @@ abstract public class Absyn {
     showTree( tree.right, spaces );
   }
 
-  static public void showTree( ReadExp tree, int spaces ) {
-    indent( spaces );
-    System.out.println( "ReadExp:" );
-    showTree( tree.input, spaces + SPACES );
-  }
-
-  static public void showTree( RepeatExp tree, int spaces ) {
-    indent( spaces );
-    System.out.println( "RepeatExp:" );
-    spaces += SPACES;
-    showTree( tree.exps, spaces );
-    showTree( tree.test, spaces );
-  }
-
   static public void showTree( VarExp tree, int spaces ) {
     indent( spaces );
     System.out.println( "VarExp: " + tree.name );
-  }
-
-  static public void showTree( WriteExp tree, int spaces ) {
-    indent( spaces );
-    System.out.println( "WriteExp:" );
-    showTree( tree.output, spaces + SPACES );
   }
 
 }
