@@ -90,6 +90,7 @@ non terminal DecList program, decList;
 non terminal Dec dec;
 non terminal VarDec varDec;
 non terminal FunctionDec funcDec;
+non terminal NameTy nameTy;
 
 /* ----------------------------Grammar Section-------------------- */
 
