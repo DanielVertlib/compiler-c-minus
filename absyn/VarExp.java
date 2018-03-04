@@ -1,10 +1,10 @@
 package absyn;
 
 public class VarExp extends Exp {
-  public String name;
+  public Var variable;
 
-  public VarExp(int pos, String name) {
+  public VarExp(int pos, Var variable) {
     this.pos = pos;
-    this.name = name;
+    this.variable = variable;
   }
 }

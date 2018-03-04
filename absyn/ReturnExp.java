@@ -1,7 +1,6 @@
 package absyn;
 
 public class ReturnExp extends Exp {
-  public String name;
   public Exp exp;
 
   public ReturnExp(int pos, Exp exp) {

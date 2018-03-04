@@ -1,7 +1,6 @@
 package absyn;
 
 public class WhileExp extends Exp {
-  public String name;
   public Exp test;
   public Exp body;
 
