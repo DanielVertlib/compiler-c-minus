@@ -134,7 +134,44 @@ dec        ::= varDec:d
              :}
              ;
 
+// declaration --> var-declaration | fun-declaration
+dec       ::= varDec:d
+            {:
+              RESULT = d;
+            :}
+            | funDec:d
+            {:
+              RESULT = d;
+            :}
+          ;
 
+// var-declaration --> type-specifier ID ; | type-specifier ID [ NUM ] ;
+varDec   ::= nameTy:t ID:i SEMI
+           {:
+             // TODO: check type isnt void for this case, report errors
+             RESULT = new SimpleDec(tleft, t, i);
+           :}
+           | type:t ID:i LBRACKET NUM:n RBRACKET SEMI
+           {:
+             // TODO: check type isnt void for this case, report errors
+             RESULT = new ArrayDec(tleft, t, i, Integer.parseInt(n));
+           :}
+           | error:e SEMI
+           {:
+             // TODO: report an error for invalid variable declarations
+           :}
+         ;
+
+// type-specifier --> int | void
+nameTy     ::= INT:i
+            {:
+              RESULT = new NameTy(ileft, TypeSpec.INT);
+            :}
+            | VOID:v
+            {:
+              RESULT = new NameTy(ileft, TypeSpec.INT);
+            :}
+          ;
 
 //27 call --> ID ( args )
 call       ::= ID:i LPAREN args:a RPAREN
