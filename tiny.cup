@@ -89,7 +89,7 @@ non terminal CallExp call;
 non terminal DecList program, decList;
 non terminal Dec dec;
 non terminal VarDec varDec;
-non terminal FunctionDec funcDec;
+non terminal FunctionDec funDec;
 non terminal NameTy nameTy;
 
 /* ----------------------------Grammar Section-------------------- */
@@ -129,7 +129,7 @@ dec        ::= varDec:d
              {:
                RESULT = d;
              :}
-             | funcDec:d
+             | funDec:d
              {:
                RESULT = d;
              :}
@@ -162,6 +162,54 @@ nameTy     ::= INT:i
               RESULT = new NameTy(vleft, NameTy.VOID);
             :}
           ;
+
+//6 fun-declaration --> type-specifier ID ( params ) compound-stmt
+funDec   ::= nameTy:t ID:i LPAREN params:p RPAREN comp_stmt:c
+           {:
+             RESULT = new SimpleDec(tleft, t, i);
+           :}
+           // TODO: check errors
+         ;
+
+//7 params --> param-list | void
+
+//8 param-list --> param-list , param | param
+
+//9 param --> type-specifier ID | type-specifier ID [ ]
+
+//10 compound-stmt --> { local-declarations statement-list }
+
+//11 local-declarations --> local-declarations var-declaration | empty
+
+//12 statement-list --> statement-list statement | empty
+
+//13 statement --> expression-stmt | compound-stmt | selection.stmt | iteration-stmt | return-stmt
+
+//14 expression-stmt --> expression ; | ;
+
+//15 selection-stmt --> if ( expression ) statement | if ( expression ) statement else statement
+
+//16 iteration-stmt --> while ( expression ) statement
+
+//17 return-stmt --> return ; | return expression ;
+
+//18 expression --> var = expression | simple-expression
+
+//19 var --> ID | ID [ expression ]
+
+//20 simple-expression --> additive-expression relop additive-expression | additive-expression
+
+//21 relop --> <= | < | >= | == | !=
+
+//22 additive-expression --> additive-expression addop term | term
+
+//23 addop --> + | -
+
+//24 term --> term mulop factor | factor
+
+//25 mulop --> * | /
+
+//26 factor --> ( expression ) | var | call | NUM
 
 //27 call --> ID ( args )
 call       ::= ID:i LPAREN args:a RPAREN
@@ -201,108 +249,3 @@ argList    ::= argList:a COMMA exp:e
                RESULT = new ExpList(e, null);
              :}
            ;
-
-
-
-/*
-start with program;
-
-program1     ::= exp:e
-                 {: RESULT = e;
-                    if (parser.SHOW_TREE) {
-                       System.out.println("The abstract syntax tree is:");
-                       Absyn.showTree(RESULT, 0);
-                    }
-                 :}
-               ;
-
-program	     ::= stmt_seq:s
-                 {: RESULT = s;
-                    System.out.println( "The abstract syntax tree is:" );
-                    Absyn.showTree( RESULT, 0 );
-                 :}
-               ;
-
-stmt_seq     ::= stmt_seq:s1 SEMI stmt:s2
-                 {: ExpList t = s1;
-                    while( t.tail != null )
-                      t = t.tail;
-                    t.tail = new ExpList(s2, null);
-                    RESULT = s1;
-                 :}
-               | stmt:s
-                 {: RESULT = new ExpList(s, null); :}
-               | error SEMI stmt:s
-                 {: parser.report_error("invalid", null);
-                    RESULT = new ExpList(s, null);
-                 :}
-               ;
-
-stmt         ::= if_stmt:i
-                 {: RESULT = i; :}
-               | repeat_stmt:r
-                 {: RESULT = r; :}
-               | assign_stmt:a
-                 {: RESULT = a; :}
-               | read_stmt:r
-                 {: RESULT = r; :}
-               | write_stmt:w
-                 {: RESULT = w; :}
-               ;
-
-if_stmt      ::= IF:i exp:e THEN stmt_seq:s END
-                 {: RESULT = new IfExp(ileft, e, s, null); :}
-               | IF:i exp:e THEN stmt_seq:s1 ELSE stmt_seq:s2 END
-                 {: RESULT = new IfExp(ileft, e, s1, s2); :}
-               ;
-
-repeat_stmt  ::= REPEAT:r stmt_seq:s UNTIL exp:e
-                 {: RESULT = new RepeatExp(rleft, s, e); :}
-               ;
-
-assign_stmt  ::= ID:i ASSIGN exp:e
-                 {: RESULT = new AssignExp(ileft, new VarExp(ileft, i), e); :}
-               ;
-
-read_stmt    ::= READ:r ID:i
-                 {: RESULT = new ReadExp(rleft, new VarExp(rleft, i)); :}
-               ;
-
-write_stmt   ::= WRITE:w exp:e
-                 {: RESULT = new WriteExp(wleft, e); :}
-               ;
-
-exp          ::= simple_exp:s1 LT simple_exp:s2
-                 {: RESULT = new OpExp(s1left, s1, OpExp.LT, s2); :}
-               | simple_exp:s1 GT simple_exp:s2
-                 {: RESULT = new OpExp(s1left, s1, OpExp.GT, s2); :}
-               | simple_exp:s1 EQ simple_exp:s2
-                 {: RESULT = new OpExp(s1left, s1, OpExp.EQ, s2); :}
-               | simple_exp:s
-                 {: RESULT = s; :}
-               ;
-
-simple_exp   ::= simple_exp:s PLUS term:t
-                 {: RESULT = new OpExp(sleft, s, OpExp.PLUS, t); :}
-               | simple_exp:s MINUS term:t
-                 {: RESULT = new OpExp(sleft, s, OpExp.MINUS, t); :}
-               | term:t
-                 {: RESULT = t; :}
-               ;
-
-term         ::= term:t TIMES factor:f
-                 {: RESULT = new OpExp(tleft, t, OpExp.TIMES, f); :}
-               | term:t OVER factor:f
-                 {: RESULT = new OpExp(tleft, t, OpExp.OVER, f); :}
-               | factor:f
-                 {: RESULT = f; :}
-               ;
-
-factor       ::= LPAREN exp:e RPAREN
-                 {: RESULT = e; :}
-               | NUM:n
-                 {: RESULT = new IntExp(nleft, n); :}
-               | ID:i
-                 {: RESULT = new VarExp(ileft, i); :}
-               ;
-*/
