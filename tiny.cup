@@ -144,7 +144,7 @@ varDec   ::= nameTy:t ID:i SEMI
            | nameTy:t ID:i LBRACKET NUM:n RBRACKET SEMI
            {:
              // TODO: check type isnt void for this case, report errors
-             RESULT = new ArrayDec(tleft, t, i, new IntExp(tleft, Integer.parseInt(n)));
+             RESULT = new ArrayDec(tleft, t, i, new IntExp(nleft, Integer.parseInt(n)));
            :}
            | error:e SEMI
            {:
