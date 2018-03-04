@@ -91,6 +91,7 @@ non terminal Dec dec;
 non terminal VarDec varDec;
 non terminal FunctionDec funDec;
 non terminal NameTy nameTy;
+non terminal VarDecList params;
 
 /* ----------------------------Grammar Section-------------------- */
 
@@ -164,9 +165,9 @@ nameTy     ::= INT:i
           ;
 
 //6 fun-declaration --> type-specifier ID ( params ) compound-stmt
-funDec   ::= nameTy:t ID:i LPAREN params:p RPAREN comp_stmt:c
+funDec   ::= nameTy:t ID:i LPAREN params:p RPAREN compExp:c
            {:
-             RESULT = new SimpleDec(tleft, t, i);
+             RESULT = new FunctionDec(tleft, t, i, p , c);
            :}
            // TODO: check errors
          ;
