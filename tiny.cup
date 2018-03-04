@@ -121,7 +121,25 @@ args       ::= argList:a
            ;
 
 //29 arg-list --> arg-list , expression | expression
-
+argList    ::= argList:a COMMA exp:e
+             {:
+               ExpList b = a;
+               if(a == null) {
+                 a = new ExpList(e, null);
+                 RESULT = a;
+               } else {
+                 while(b.tail != null) {
+                   b = b.tail;
+                 }
+                 b.tail = new ExpList(e, null);
+                 RESULT = a;
+               }
+             :}
+           | exp:e
+             {:
+               RESULT = new ExpList(e, null);
+             :}
+           ;
 
 
 
