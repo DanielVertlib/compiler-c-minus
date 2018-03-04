@@ -86,10 +86,55 @@ non terminal Exp stmt, if_stmt, repeat_stmt, assign_stmt, read_stmt, write_stmt;
 non terminal Exp exp, term, factor;
 non terminal VarExp var;
 non terminal CallExp call;
+non terminal DecList program, decList;
+non terminal Dec dec;
+non terminal VarDec varDec;
+non terminal FunctionDec funcDec;
 
 /* ----------------------------Grammar Section-------------------- */
 
 //start rule from column 12
+
+//1 program --> declaration-list
+program    ::= decList:d
+             {:
+               RESULT = d;
+               System.out.println("Print tree here");
+             :}
+           ;
+
+//2 declaration-list --> declaration-list declaration | declaration
+decList    ::= decList:d1 dec:d2
+             {:
+               DecList a = d1;
+               if(d1 == null) {
+                  d1 = new DecList(d2, null);
+               } else {
+                  while(a.tail != null) {
+                    a = a.tail;
+                  }
+                  a.tail = new DecList(d2, null);
+                  RESULT = d1;
+               }
+             :}
+             | dec:d
+             {:
+               RESULT = new DecList(d, null);
+             :}
+           ;
+
+//3 declaration --> var-declaration | fun-declaration
+dec        ::= varDec:d
+             {:
+               RESULT = d;
+             :}
+             | funcDec:d
+             {:
+               RESULT = d;
+             :}
+             ;
+
+
 
 //27 call --> ID ( args )
 call       ::= ID:i LPAREN args:a RPAREN
@@ -103,7 +148,7 @@ args       ::= argList:a
              {:
                RESULT = a;
              :}
-           |
+             |
              {:
                RESULT = null;
              :}
