@@ -84,9 +84,22 @@ non terminal Exp program1;
 non terminal ExpList program, stmt_seq;
 non terminal Exp stmt, if_stmt, repeat_stmt, assign_stmt, read_stmt, write_stmt;
 non terminal Exp exp, simple_exp, term, factor;
+non terminal VarExp var;
 
 /* ----------------------------Grammar Section-------------------- */
 
+//19 var --> ID | ID [ expression ]
+var     ::= ID:i
+            {:
+               RESULT = new VarExp(ileft, i, null);
+            :}
+            | ID:i LBRACKET exp:e RBRACKET
+            {:
+               RESULT = new VarExp(ileft, i, e);
+            :}
+            ;
+
+/*
 start with program;
 
 program1     ::= exp:e
@@ -187,3 +200,4 @@ factor       ::= LPAREN exp:e RPAREN
                | ID:i
                  {: RESULT = new VarExp(ileft, i); :}
                ;
+*/
