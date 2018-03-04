@@ -134,17 +134,6 @@ dec        ::= varDec:d
              :}
              ;
 
-// declaration --> var-declaration | fun-declaration
-dec       ::= varDec:d
-            {:
-              RESULT = d;
-            :}
-            | funDec:d
-            {:
-              RESULT = d;
-            :}
-          ;
-
 // var-declaration --> type-specifier ID ; | type-specifier ID [ NUM ] ;
 varDec   ::= nameTy:t ID:i SEMI
            {:
