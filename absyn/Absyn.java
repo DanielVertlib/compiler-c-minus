@@ -13,7 +13,7 @@ abstract public class Absyn {
     while( tree != null ) {
       showTree( tree.head, spaces );
       tree = tree.tail;
-    } 
+    }
   }
 
   static public void showTree( Exp tree, int spaces ) {
@@ -31,7 +31,7 @@ abstract public class Absyn {
       showTree( (RepeatExp)tree, spaces );
     else if( tree instanceof VarExp )
       showTree( (VarExp)tree, spaces );
-    else if( tree instanceof WriteExp ) 
+    else if( tree instanceof WriteExp )
       showTree( (WriteExp)tree, spaces );
     else {
       indent( spaces );
@@ -58,12 +58,12 @@ abstract public class Absyn {
 
   static public void showTree( IntExp tree, int spaces ) {
     indent( spaces );
-    System.out.println( "IntExp: " + tree.value ); 
+    System.out.println( "IntExp: " + tree.value );
   }
 
   static public void showTree( OpExp tree, int spaces ) {
     indent( spaces );
-    System.out.print( "OpExp:" ); 
+    System.out.print( "OpExp:" );
     switch( tree.op ) {
       case OpExp.PLUS:
         System.out.println( " + " );
@@ -71,10 +71,10 @@ abstract public class Absyn {
       case OpExp.MINUS:
         System.out.println( " - " );
         break;
-      case OpExp.TIMES:
+      case OpExp.MUL:
         System.out.println( " * " );
         break;
-      case OpExp.OVER:
+      case OpExp.DIV:
         System.out.println( " / " );
         break;
       case OpExp.EQ:
@@ -91,13 +91,13 @@ abstract public class Absyn {
     }
     spaces += SPACES;
     showTree( tree.left, spaces );
-    showTree( tree.right, spaces ); 
+    showTree( tree.right, spaces );
   }
 
   static public void showTree( ReadExp tree, int spaces ) {
     indent( spaces );
     System.out.println( "ReadExp:" );
-    showTree( tree.input, spaces + SPACES );  
+    showTree( tree.input, spaces + SPACES );
   }
 
   static public void showTree( RepeatExp tree, int spaces ) {
@@ -105,7 +105,7 @@ abstract public class Absyn {
     System.out.println( "RepeatExp:" );
     spaces += SPACES;
     showTree( tree.exps, spaces );
-    showTree( tree.test, spaces ); 
+    showTree( tree.test, spaces );
   }
 
   static public void showTree( VarExp tree, int spaces ) {
@@ -116,7 +116,7 @@ abstract public class Absyn {
   static public void showTree( WriteExp tree, int spaces ) {
     indent( spaces );
     System.out.println( "WriteExp:" );
-    showTree( tree.output, spaces + SPACES ); 
+    showTree( tree.output, spaces + SPACES );
   }
 
 }
