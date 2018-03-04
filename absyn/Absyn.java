@@ -9,13 +9,23 @@ abstract public class Absyn {
     for( int i = 0; i < spaces; i++ ) System.out.print( " " );
   }
 
-  static public void showTree( ExpList tree, int spaces ) {
-    while( tree != null ) {
-      showTree( tree.head, spaces );
-      tree = tree.tail;
+  // Abstract class Var
+  static public void showTree( Var tree, int spaces ) {
+    if( tree instanceof SimpleVar ) {
+      indent( spaces );
+      System.out.println( "SimpleVar:" );
+    }
+    else if( tree instanceof IndexVar ) {
+      indent( spaces );
+      System.out.println( "IndexVar:" );
+    }
+    else {
+      indent( spaces );
+      System.out.println( "Illegal expression at line " + tree.pos  );
     }
   }
 
+  // Abstract class Exp
   static public void showTree( Exp tree, int spaces ) {
     if( tree instanceof NilExp )
       showTree( (NilExp)tree, spaces );
@@ -125,6 +135,56 @@ abstract public class Absyn {
   static public void showTree( CompoundExp tree, int spaces ) {
     indent( spaces );
     System.out.println( "CompoundExp: "  );
+  }
+
+  // Abstract class Dec
+  static public void showTree( Dec tree, int spaces ) {
+    if( tree instanceof FunctionDec ) {
+      indent( spaces );
+      System.out.println( "FunctionDec:" );
+    }
+    else {
+      indent( spaces );
+      System.out.println( "Illegal expression at line " + tree.pos  );
+    }
+  }
+
+  // Abstract class VarDec
+  static public void showTree( VarDec tree, int spaces ) {
+    if( tree instanceof SimpleDec ) {
+      indent( spaces );
+      System.out.println( "SimpleDec:" );
+    }
+    else if( tree instanceof ArrayDec ) {
+      indent( spaces );
+      System.out.println( "ArrayDec:" );
+    }
+    else {
+      indent( spaces );
+      System.out.println( "Illegal expression at line " + tree.pos  );
+    }
+  }
+
+  // Miscellaneous classes (DecList, VarDecList, ExpList)
+  static public void showTree( DecList tree, int spaces ) {
+    while( tree != null ) {
+      showTree( tree.head, spaces );
+      tree = tree.tail;
+    }
+  }
+
+  static public void showTree( VarDecList tree, int spaces ) {
+    while( tree != null ) {
+      showTree( tree.head, spaces );
+      tree = tree.tail;
+    }
+  }
+
+  static public void showTree( ExpList tree, int spaces ) {
+    while( tree != null ) {
+      showTree( tree.head, spaces );
+      tree = tree.tail;
+    }
   }
 
 }
