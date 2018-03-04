@@ -1,4 +1,4 @@
-package abysn;
+package absyn;
 
-public abstract class VarDec extends Abysn {
+public abstract class VarDec extends Absyn {
 }
