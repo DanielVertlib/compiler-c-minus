@@ -6,18 +6,15 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int TIMES = 17;
-  public static final int OVER = 18;
   public static final int LT = 11;
+  public static final int NE = 10;
   public static final int ELSE = 3;
   public static final int PLUS = 15;
-  public static final int NOTEQ = 10;
   public static final int RBRACE = 22;
   public static final int RPAREN = 20;
   public static final int INT = 7;
   public static final int SEMI = 25;
   public static final int WHILE = 4;
-  public static final int LTOE = 12;
   public static final int RETURN = 5;
   public static final int ERROR = 29;
   public static final int IF = 2;
@@ -26,15 +23,18 @@ public class sym {
   public static final int LPAREN = 19;
   public static final int GT = 13;
   public static final int ID = 27;
+  public static final int LE = 12;
   public static final int RBRACKET = 24;
   public static final int NUM = 28;
-  public static final int GTOE = 14;
   public static final int COMMA = 26;
   public static final int EOF = 0;
+  public static final int DIV = 18;
+  public static final int GE = 14;
   public static final int MINUS = 16;
   public static final int error = 1;
   public static final int ASSIGN = 8;
   public static final int EQ = 9;
+  public static final int MUL = 17;
   public static final int VOID = 6;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -47,15 +47,15 @@ public class sym {
   "INT",
   "ASSIGN",
   "EQ",
-  "NOTEQ",
+  "NE",
   "LT",
-  "LTOE",
+  "LE",
   "GT",
-  "GTOE",
+  "GE",
   "PLUS",
   "MINUS",
-  "TIMES",
-  "OVER",
+  "MUL",
+  "DIV",
   "LPAREN",
   "RPAREN",
   "LBRACE",

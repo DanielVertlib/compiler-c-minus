@@ -71,15 +71,15 @@ identifier = {letter}+
 /* Symbols */
 "="                { return symbol(sym.ASSIGN); }
 "=="               { return symbol(sym.EQ); }
-"!="               { return symbol(sym.NOTEQ); }
+"!="               { return symbol(sym.NE); }
 "<"                { return symbol(sym.LT); }
-"<="               { return symbol(sym.LTOE); }
+"<="               { return symbol(sym.LE); }
 ">"                { return symbol(sym.GT); }
-">="               { return symbol(sym.GTOE); }
+">="               { return symbol(sym.GE); }
 "+"                { return symbol(sym.PLUS); }
 "-"                { return symbol(sym.MINUS); }
-"*"                { return symbol(sym.TIMES); }
-"/"                { return symbol(sym.OVER); }
+"*"                { return symbol(sym.MUL); }
+"/"                { return symbol(sym.DIV); }
 "("                { return symbol(sym.LPAREN); }
 ")"                { return symbol(sym.RPAREN); }
 "{"                { return symbol(sym.LBRACE); }

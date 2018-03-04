@@ -91,11 +91,20 @@ abstract public class Absyn {
       case OpExp.EQ:
         System.out.println( " = " );
         break;
+      case OpExp.NE:
+        System.out.println( " != " );
+        break;
       case OpExp.LT:
         System.out.println( " < " );
         break;
+      case OpExp.LE:
+        System.out.println( " <= " );
+        break;
       case OpExp.GT:
         System.out.println( " > " );
+        break;
+      case OpExp.GE:
+        System.out.println( " >= " );
         break;
       default:
         System.out.println( "Unrecognized operator at line " + tree.pos);
