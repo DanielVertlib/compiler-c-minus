@@ -81,23 +81,49 @@ terminal String ID, NUM;
 terminal ERROR;
 
 non terminal Exp program1;
-non terminal ExpList program, stmt_seq;
+non terminal ExpList args, argList;
 non terminal Exp stmt, if_stmt, repeat_stmt, assign_stmt, read_stmt, write_stmt;
-non terminal Exp exp, simple_exp, term, factor;
+non terminal Exp exp, term, factor;
 non terminal VarExp var;
+non terminal CallExp call;
 
 /* ----------------------------Grammar Section-------------------- */
 
+//start rule from column 12
+
 //19 var --> ID | ID [ expression ]
-var     ::= ID:i
-            {:
+var        ::= ID:i
+             {:
                RESULT = new VarExp(ileft, i, null);
-            :}
-            | ID:i LBRACKET exp:e RBRACKET
-            {:
+             :}
+           | ID:i LBRACKET exp:e RBRACKET
+             {:
                RESULT = new VarExp(ileft, i, e);
-            :}
-            ;
+             :}
+           ;
+
+//27 call --> ID ( args )
+call       ::= ID:i LPAREN args:a RPAREN
+             {:
+               RESULT = new CallExp(ileft, i, a);
+             :}
+           ;
+
+//28 args --> arg-list | empty
+args       ::= argList:a
+             {:
+               RESULT = a;
+             :}
+           |
+             {:
+               RESULT = null;
+             :}
+           ;
+
+//29 arg-list --> arg-list , expression | expression
+
+
+
 
 /*
 start with program;
