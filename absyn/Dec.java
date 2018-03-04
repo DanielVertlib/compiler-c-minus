@@ -1,4 +1,4 @@
-package abysn;
+package absyn;
 
-abstract public class Dec extends Abysn {
+abstract public class Dec extends Absyn {
 }

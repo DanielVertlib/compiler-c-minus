@@ -1,4 +1,4 @@
-package abysn;
+package absyn;
 
 public class SimpleDec extends VarDec {
     public int pos;
