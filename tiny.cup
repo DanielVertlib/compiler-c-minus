@@ -81,18 +81,17 @@ terminal String ID, NUM;
 terminal ERROR;
 
 non terminal DecList program;
-non terminal DecList decList, locDec;
+non terminal DecList decList;
 non terminal Dec dec;
 non terminal VarDec varDec;
 non terminal NameTy nameTy;
 non terminal FunctionDec funDec;
-non terminal VarDecList params, paramList;
+non terminal VarDecList params, paramList, locDec;
 non terminal VarDec param;
 non terminal CompoundExp compStmt;
 
 non terminal ExpList args, argList, expList, stmtList;
-non terminal Exp exp, stmt, expStmt, term, factor;
-non terminal IfExp selStmt;
+non terminal Exp exp, stmt, expStmt, term, factor, selStmt;
 non terminal WhileExp iterStmt;
 non terminal ReturnExp returnStmt;
 
@@ -183,11 +182,11 @@ funDec   ::= nameTy:t ID:i LPAREN params:p RPAREN compStmt:c
 //7 params --> param-list | void
 params   ::= paramList:p
            {:
-             RESULT = new VarDecList(pleft, p);
+             RESULT = p;
            :}
            | VOID:v
            {:
-             RESULT = new VarDecList(vleft, null);
+             RESULT = new VarDecList(new SimpleDec(vleft, new NameTy(vleft, NameTy.VOID), null), null);
            :}
            // TODO: check errors
          ;
@@ -219,8 +218,8 @@ param ::= INT:n ID:i
               RESULT = new SimpleDec(nleft, new NameTy(nleft, NameTy.INT), i);
             :}
           | INT:n ID:i LBRACKET RBRACKET
-            {:
-              RESULT = new ArrayDec(nleft, new NameTy(nleft, NameTy.INT), i, new IntExp(nleft, n));
+            {: // TODO: Fix the new IntExp, it shouldnt have 0, should have value
+              RESULT = new ArrayDec(nleft, new NameTy(nleft, NameTy.INT), i, new IntExp(nleft, 0));
             :}
           ;
 
@@ -234,10 +233,10 @@ compStmt ::= LBRACE:lb locDec:ld expList:e RBRACE
 //11 local-declarations --> local-declarations var-declaration | empty
 locDec ::= locDec:d1 varDec:d2
             {:
-              DecList t = d1;
+              VarDecList t = d1;
               while(t.tail != null)
                 t = t.tail;
-              t.tail = new DecList(d2, null);
+              t.tail = new VarDecList(d2, null);
               RESULT = d1;
             :}
             | //empty
@@ -281,12 +280,9 @@ stmt ::=    expStmt:s
 //14 expression-stmt --> expression ; | ;
 expStmt ::= exp:e SEMI
             {:
-              RESULT = new VarExp(eleft, e);
+              RESULT = e;
             :}
             | SEMI
-            {:
-              RESULT = new NilExp(eleft);
-            :}
           ;
 
 //15 selection-stmt --> if ( expression ) statement | if ( expression ) statement else statement
@@ -321,7 +317,7 @@ returnStmt ::= RETURN:r SEMI
 //18 expression --> var = expression | simple-expression
 exp ::=     var:v ASSIGN exp:e
             {:
-              RESULT = new AssignExp(vleft, v, e);
+              RESULT = new AssignExp(vleft, v.variable, e);
             :}
             | simpExp:s
             {:
