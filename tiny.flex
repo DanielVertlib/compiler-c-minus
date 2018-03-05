@@ -94,4 +94,3 @@ identifier = {letter}+
 {identifier}       { return symbol(sym.ID, yytext()); }
 {number}           { return symbol(sym.NUM, yytext()); }
 .                  { return symbol(sym.ERROR); }
-"{"[^\}]*"}"       { /* skip comments */ }
