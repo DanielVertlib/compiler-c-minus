@@ -80,23 +80,24 @@ terminal LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, SEMI, COMMA;
 terminal String ID, NUM;
 terminal ERROR;
 
-non terminal Exp program1;
-non terminal ExpList args, argList, expList, stmtList;
-non terminal Exp stmt, if_stmt, repeat_stmt, assign_stmt, read_stmt, write_stmt;
-non terminal Exp exp, expStmt, term, factor;
-non terminal VarExp var;
-non terminal CallExp call;
-non terminal DecList program, decList;
+non terminal DecList program;
+non terminal DecList decList, locDec;
 non terminal Dec dec;
 non terminal VarDec varDec;
-non terminal FunctionDec funDec;
 non terminal NameTy nameTy;
-non terminal VarDecList params, paramList, locDec;
+non terminal FunctionDec funDec;
+non terminal VarDecList params, paramList;
 non terminal VarDec param;
 non terminal CompoundExp compStmt;
+
+non terminal ExpList args, argList, expList, stmtList;
+non terminal Exp exp, stmt, expStmt, term, factor;
 non terminal IfExp selStmt;
 non terminal WhileExp iterStmt;
 non terminal ReturnExp returnStmt;
+
+non terminal VarExp var;
+non terminal CallExp call;
 non terminal OpExp simpExp, addExp;
 non terminal Integer relop, addop, mulop;
 
