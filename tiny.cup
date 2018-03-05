@@ -91,7 +91,8 @@ non terminal Dec dec;
 non terminal VarDec varDec;
 non terminal FunctionDec funDec;
 non terminal NameTy nameTy;
-non terminal VarDecList params;
+non terminal VarDecList params, paramList;
+non terminal Var param;
 
 /* ----------------------------Grammar Section-------------------- */
 
@@ -154,9 +155,9 @@ varDec   ::= nameTy:t ID:i SEMI
          ;
 
 //5 type-specifier --> int | void
-nameTy     ::= INT:i
+nameTy     ::= INT:n
             {:
-              RESULT = new NameTy(ileft, NameTy.INT);
+              RESULT = new NameTy(nleft, NameTy.INT);
             :}
             | VOID:v
             {:
@@ -173,10 +174,44 @@ funDec   ::= nameTy:t ID:i LPAREN params:p RPAREN compExp:c
          ;
 
 //7 params --> param-list | void
+params   ::= paramList:p
+           {:
+             RESULT = new VarDecList(pleft, p);
+           :}
+           // TODO: check errors
+         ;
 
 //8 param-list --> param-list , param | param
+paramList ::= paramList:p1 COMMA param:p2
+            {:
+              VarDecList v = p1;
+              if(p1 == null) {
+                p1 = new VarDecList(p2, null);
+                RESULT = p1;
+              } else {
+                while(v.tail != null) {
+                  v = v.tail;
+                }
+                v.tail = new VarDecList(p2, null);
+                RESULT = p1;
+              }
+            :}
+          | param:p
+            {:
+              RESULT = new VarDecList(p, null);
+            :}
+          ;
 
 //9 param --> type-specifier ID | type-specifier ID [ ]
+param ::= INT:n ID:i
+            {:
+              RESULT = new SimpleDec(nleft, new NameTy(nleft, NameTy.INT), n)
+            :}
+          | INT:n ID:i LBRACKET RBRACKET
+            {:
+              RESULT = new ArrayDec(nleft, new NameTy(nleft, NameTy.INT), n, new IntExp(nleft, n));
+            :}
+          ;
 
 //10 compound-stmt --> { local-declarations statement-list }
 
