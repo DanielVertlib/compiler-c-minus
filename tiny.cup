@@ -324,22 +324,22 @@ exp ::=     var:v ASSIGN exp:e
 //19 var --> ID | ID [ expression ]
 var ::=     ID:i
             {:
-
+              RESULT = new VarExp(ileft, null);
             :}
-            | ID LBRACKET exp:e RBRACKET
+            | ID:i LBRACKET exp:e RBRACKET
             {:
-
+              RESULT = new VarExp(eleft, e);
             :}
           ;
 
 //20 simple-expression --> additive-expression relop additive-expression | additive-expression
 simpExp ::= addExp:e1 relop:a addExp:e2
             {:
-
+              RESULT = new OpExp(e1left, e1, a, e2);
             :}
             | addExp:e
             {:
-
+              RESULT = e;
             :}
           ;
 
