@@ -92,7 +92,7 @@ non terminal VarDec varDec;
 non terminal FunctionDec funDec;
 non terminal NameTy nameTy;
 non terminal VarDecList params, paramList, locDec;
-non terminal Var param;
+non terminal VarDec param;
 non terminal CompoundExp compExp;
 
 /* ----------------------------Grammar Section-------------------- */
@@ -210,11 +210,11 @@ paramList ::= paramList:p1 COMMA param:p2
 //9 param --> type-specifier ID | type-specifier ID [ ]
 param ::= INT:n ID:i
             {:
-              RESULT = new SimpleDec(nleft, new NameTy(nleft, NameTy.INT), n);
+              RESULT = new SimpleDec(nleft, new NameTy(nleft, NameTy.INT), i);
             :}
           | INT:n ID:i LBRACKET RBRACKET
             {:
-              RESULT = new ArrayDec(nleft, new NameTy(nleft, NameTy.INT), n, new IntExp(nleft, n));
+              RESULT = new ArrayDec(nleft, new NameTy(nleft, NameTy.INT), i, new IntExp(nleft, n));
             :}
           ;
 
