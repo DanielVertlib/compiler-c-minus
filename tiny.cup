@@ -81,9 +81,9 @@ terminal String ID, NUM;
 terminal ERROR;
 
 non terminal Exp program1;
-non terminal ExpList args, argList, expList;
+non terminal ExpList args, argList, expList, stmtList;
 non terminal Exp stmt, if_stmt, repeat_stmt, assign_stmt, read_stmt, write_stmt;
-non terminal Exp exp, term, factor, empty;
+non terminal Exp exp, expStmt, term, factor;
 non terminal VarExp var;
 non terminal CallExp call;
 non terminal DecList program, decList;
@@ -93,7 +93,12 @@ non terminal FunctionDec funDec;
 non terminal NameTy nameTy;
 non terminal VarDecList params, paramList, locDec;
 non terminal VarDec param;
-non terminal CompoundExp compExp;
+non terminal CompoundExp compStmt;
+non terminal IfExp selStmt;
+non terminal WhileExp iterStmt;
+non terminal ReturnExp returnStmt;
+non terminal OpExp simpExp, addExp;
+non terminal Integer relop, addop, mulop;
 
 /* ----------------------------Grammar Section-------------------- */
 
@@ -167,7 +172,7 @@ nameTy     ::= INT:n
           ;
 
 //6 fun-declaration --> type-specifier ID ( params ) compound-stmt
-funDec   ::= nameTy:t ID:i LPAREN params:p RPAREN compExp:c
+funDec   ::= nameTy:t ID:i LPAREN params:p RPAREN compStmt:c
            {:
              RESULT = new FunctionDec(tleft, t, i, p , c);
            :}
@@ -219,7 +224,7 @@ param ::= INT:n ID:i
           ;
 
 //10 compound-stmt --> { local-declarations statement-list }
-compExp ::= LBRACE:lb locDec:ld expList:e RBRACE
+compStmt ::= LBRACE:lb locDec:ld expList:e RBRACE
             {:
               RESULT = new CompoundExp(lbleft, ld, e);
             :}
@@ -228,83 +233,85 @@ compExp ::= LBRACE:lb locDec:ld expList:e RBRACE
 //11 local-declarations --> local-declarations var-declaration | empty
 locDec ::= locDec:d1 varDec:d2
             {:
-
+              DecList t = d1;
+              while(t.tail != null)
+                t = t.tail;
+              t.tail = new DecList(d2, null);
+              RESULT = d1;
             :}
-            | empty
-            {:
-
-            :}
+            | //empty
           ;
 
 //12 statement-list --> statement-list statement | empty
 stmtList ::= stmtList:s1 stmt:s2
             {:
-
+              ExpList t = s1;
+              while(t.tail != null)
+                t = t.tail;
+              t.tail = new ExpList(s2, null);
+              RESULT = s1;
             :}
-            | empty
-            {:
-
-            :}
+            | //empty
           ;
 
 //13 statement --> expression-stmt | compound-stmt | selection.stmt | iteration-stmt | return-stmt
 stmt ::=    expStmt:s
             {:
-
+              RESULT = s;
             :}
             | compStmt:s
             {:
-
+              RESULT = s;
             :}
             | selStmt:s
             {:
-
+              RESULT = s;
             :}
             | iterStmt:s
             {:
-
+              RESULT = s;
             :}
             | returnStmt:s
             {:
-
+              RESULT = s;
             :}
           ;
 
 //14 expression-stmt --> expression ; | ;
 expStmt ::= exp:e SEMI
             {:
-
+              RESULT = new VarExp(eleft, e);
             :}
             | SEMI
             {:
-
+              RESULT = new NilExp(eleft);
             :}
           ;
 
 //15 selection-stmt --> if ( expression ) statement | if ( expression ) statement else statement
-selStmt ::= if LPAREN exp:e RPAREN stmt:s
+selStmt ::= IF:i LPAREN exp:e RPAREN stmt:s
             {:
-
+              RESULT = IfExp(ileft, e, s, null);
             :}
-            | if LPAREN exp:e RPAREN stmt:s1 ELSE stmt:s2
+            | IF:i LPAREN exp:e RPAREN stmt:s1 ELSE stmt:s2
             {:
-
+              RESULT = IfExp(ileft, e, s1, s2);
             :}
           ;
 
 //16 iteration-stmt --> while ( expression ) statement
-iterStmt ::= while:w LPAREN exp:e RPAREN stmt:s
+iterStmt ::= WHILE:w LPAREN exp:e RPAREN stmt:s
             {:
               RESULT = new WhileExp(wleft, e, s);
             :}
           ;
 
 //17 return-stmt --> return ; | return expression ;
-returnStmt ::= return:r SEMI
+returnStmt ::= RETURN:r SEMI
             {:
               RESULT = new ReturnExp(rleft, null);
             :}
-            | return:r exp:e SEMI
+            | RETURN:r exp:e SEMI
             {:
               RESULT = new ReturnExp(rleft, e);
             :}
@@ -427,9 +434,9 @@ factor ::=  LPAREN exp:e RPAREN
             {:
               RESULT = c;
             :}
-            | num:n
+            | NUM:n
             {:
-              RESULT = n;
+              RESULT = new IntExp(nleft, Integer.parseInt(n));
             :}
           ;
 
