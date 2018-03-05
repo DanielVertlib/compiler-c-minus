@@ -31,6 +31,7 @@ parser code {:
                information in the object info that is being typecasted
                as a java_cup.runtime.Symbol object. */
             java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            System.err.println(info);
 
             /* Check if the line number in the input is greater or
                equal to zero. */
@@ -235,10 +236,15 @@ compStmt ::= LBRACE:lb locDec:ld stmtList:e RBRACE
 locDec ::= locDec:d1 varDec:d2
             {:
               VarDecList t = d1;
-              while(t.tail != null)
-                t = t.tail;
-              t.tail = new VarDecList(d2, null);
-              RESULT = d1;
+              if(d1 == null) {
+                d1 = new VarDecList(d2, null);
+                RESULT = d1;
+              } else {
+                while(t.tail != null)
+                  t = t.tail;
+                t.tail = new VarDecList(d2, null);
+                RESULT = d1;
+              }
             :}
             | //empty
           ;
@@ -247,10 +253,15 @@ locDec ::= locDec:d1 varDec:d2
 stmtList ::= stmtList:s1 stmt:s2
             {:
               ExpList t = s1;
-              while(t.tail != null)
-                t = t.tail;
-              t.tail = new ExpList(s2, null);
-              RESULT = s1;
+              if(s1 == null) {
+                s1 = new ExpList(s2, null);
+                RESULT = s1;
+              } else {
+                while(t.tail != null)
+                  t = t.tail;
+                t.tail = new ExpList(s2, null);
+                RESULT = s1;
+              }
             :}
             | //empty
           ;

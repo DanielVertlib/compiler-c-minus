@@ -7,6 +7,4 @@ void main(void) {
     fac = fac * x;
     x = x - 1;
   }
-
-  output(fac);
 }
