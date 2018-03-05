@@ -8,7 +8,7 @@
 /* ----------------------Preliminary Declarations Section--------------------*/
 
 /* Import the class java_cup.runtime.*  */
-//import java_cup.runtime.*;
+import java_cup.runtime.*;
 import absyn.*;
 
 /* Parser code to change the way the parser reports errors (include
@@ -121,6 +121,7 @@ decList    ::= decList:d1 dec:d2
                DecList a = d1;
                if(d1 == null) {
                   d1 = new DecList(d2, null);
+                  RESULT = d1;
                } else {
                   while(a.tail != null) {
                     a = a.tail;
