@@ -83,7 +83,7 @@ terminal ERROR;
 non terminal Exp program1;
 non terminal ExpList args, argList, expList;
 non terminal Exp stmt, if_stmt, repeat_stmt, assign_stmt, read_stmt, write_stmt;
-non terminal Exp exp, term, factor;
+non terminal Exp exp, term, factor, empty;
 non terminal VarExp var;
 non terminal CallExp call;
 non terminal DecList program, decList;
@@ -226,36 +226,212 @@ compExp ::= LBRACE:lb locDec:ld expList:e RBRACE
           ;
 
 //11 local-declarations --> local-declarations var-declaration | empty
+locDec ::= locDec:d1 varDec:d2
+            {:
+
+            :}
+            | empty
+            {:
+
+            :}
+          ;
 
 //12 statement-list --> statement-list statement | empty
+stmtList ::= stmtList:s1 stmt:s2
+            {:
+
+            :}
+            | empty
+            {:
+
+            :}
+          ;
 
 //13 statement --> expression-stmt | compound-stmt | selection.stmt | iteration-stmt | return-stmt
+stmt ::=    expStmt:s
+            {:
+
+            :}
+            | compStmt:s
+            {:
+
+            :}
+            | selStmt:s
+            {:
+
+            :}
+            | iterStmt:s
+            {:
+
+            :}
+            | returnStmt:s
+            {:
+
+            :}
+          ;
 
 //14 expression-stmt --> expression ; | ;
+expStmt ::= exp:e SEMI
+            {:
+
+            :}
+            | SEMI
+            {:
+
+            :}
+          ;
 
 //15 selection-stmt --> if ( expression ) statement | if ( expression ) statement else statement
+selStmt ::= if LPAREN exp:e RPAREN stmt:s
+            {:
+
+            :}
+            | if LPAREN exp:e RPAREN stmt:s1 ELSE stmt:s2
+            {:
+
+            :}
+          ;
 
 //16 iteration-stmt --> while ( expression ) statement
+iterStmt ::= while LPAREN exp:e RPAREN stmt:s
+            {:
+
+            :}
+          ;
 
 //17 return-stmt --> return ; | return expression ;
+returnStmt ::= return SEMI
+            {:
+
+            :}
+            | return exp:e SEMI
+            {:
+
+            :}
+          ;
 
 //18 expression --> var = expression | simple-expression
+exp ::=     var:v ASSIGN exp:e
+            {:
+
+            :}
+            | simpExp
+            {:
+
+            :}
+          ;
 
 //19 var --> ID | ID [ expression ]
+var ::=     ID:i
+            {:
+
+            :}
+            | ID LBRACKET exp:e RBRACKET
+            {:
+
+            :}
+          ;
 
 //20 simple-expression --> additive-expression relop additive-expression | additive-expression
+simpExp ::= addExp:e1 relop:a addExp:e2
+            {:
 
-//21 relop --> <= | < | >= | == | !=
+            :}
+            | addExp:e
+            {:
+
+            :}
+          ;
+
+//21 relop --> <= | < | > | >= | == | !=
+relop ::=     LE
+            {:
+              RESULT = OpExp.LE;
+            :}
+            | LT
+            {:
+              RESULT = OpExp.LT;
+            :}
+            | GT
+            {:
+              RESULT = OpExp.GT;
+            :}
+            | GE
+            {:
+              RESULT = OpExp.GE;
+            :}
+            | EQ
+            {:
+              RESULT = OpExp.EQ;
+            :}
+            | NE
+            {:
+              RESULT = OpExp.NE;
+            :}
+          ;
 
 //22 additive-expression --> additive-expression addop term | term
+addExp ::= addExp:e addop:a term:t
+            {:
+              RESULT = new OpExp(eleft, e, OpExp.PLUS, t);
+            :}
+            | term:t
+            {:
+              RESULT = t;
+            :}
+          ;
 
 //23 addop --> + | -
+addop ::=    PLUS
+            {:
+              RESULT = OpExp.PLUS;
+            :}
+            | MINUS
+            {:
+              RESULT = OpExp.MINUS;
+            :}
+          ;
 
 //24 term --> term mulop factor | factor
+term ::=    term:t MUL factor:f
+            {:
+              RESULT = new OpExp(tleft, t, OpExp.MUL, f);
+            :}
+            | factor:f
+            {:
+              RESULT = f;
+            :}
+          ;
 
 //25 mulop --> * | /
+mulop ::=   MUL
+            {:
+              RESULT = OpExp.MUL;
+            :}
+            | DIV
+            {:
+              RESULT = OpExp.DIV;
+            :}
+          ;
 
 //26 factor --> ( expression ) | var | call | NUM
+factor ::=  LPAREN exp:e RPAREN
+            {:
+              RESULT = e;
+            :}
+            | var:v
+            {:
+              RESULT = v;
+            :}
+            | call:c
+            {:
+              RESULT = c;
+            :}
+            | num:n
+            {:
+              RESULT = n;
+            :}
+          ;
 
 //27 call --> ID ( args )
 call       ::= ID:i LPAREN args:a RPAREN
