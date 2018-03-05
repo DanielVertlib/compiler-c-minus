@@ -90,7 +90,7 @@ non terminal VarDecList params, paramList, locDec;
 non terminal VarDec param;
 non terminal CompoundExp compStmt;
 
-non terminal ExpList args, argList, expList, stmtList;
+non terminal ExpList args, argList, stmtList;
 non terminal Exp exp, stmt, expStmt, addExp, simpExp, term, factor, selStmt;
 non terminal WhileExp iterStmt;
 non terminal ReturnExp returnStmt;
@@ -99,9 +99,13 @@ non terminal Var var;
 non terminal CallExp call;
 non terminal Integer relop, addop, mulop;
 
+precedence left PLUS, MINUS, MUL, DIV, LT, LE, GT, GE, EQ, NE, ELSE;
+precedence right ASSIGN;
+precedence nonassoc RETURN;
+
 /* ----------------------------Grammar Section-------------------- */
 
-//start rule from column 12
+start with program;
 
 //1 program --> declaration-list
 program    ::= decList:d
@@ -153,10 +157,7 @@ varDec   ::= nameTy:t ID:i SEMI
              // TODO: check type isnt void for this case, report errors
              RESULT = new ArrayDec(tleft, t, i, new IntExp(nleft, Integer.parseInt(n)));
            :}
-           | error:e SEMI
-           {:
-             // TODO: report an error for invalid variable declarations
-           :}
+            // TODO: report an error for invalid variable declarations
          ;
 
 //5 type-specifier --> int | void
@@ -223,7 +224,7 @@ param ::= INT:n ID:i
           ;
 
 //10 compound-stmt --> { local-declarations statement-list }
-compStmt ::= LBRACE:lb locDec:ld expList:e RBRACE
+compStmt ::= LBRACE:lb locDec:ld stmtList:e RBRACE
             {:
               RESULT = new CompoundExp(lbleft, ld, e);
             :}
@@ -396,9 +397,9 @@ addop ::=    PLUS
           ;
 
 //24 term --> term mulop factor | factor
-term ::=    term:t MUL factor:f
+term ::=    term:t mulop:m factor:f
             {:
-              RESULT = new OpExp(tleft, t, OpExp.MUL, f);
+              RESULT = new OpExp(tleft, t, m, f);
             :}
             | factor:f
             {:
