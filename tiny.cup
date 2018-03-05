@@ -113,6 +113,7 @@ program    ::= decList:d
              {:
                RESULT = d;
                System.out.println("Print tree here");
+               Absyn.showTree(RESULT, 0);
              :}
            ;
 

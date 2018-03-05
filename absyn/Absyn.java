@@ -149,13 +149,20 @@ abstract public class Absyn {
   // Abstract class Dec
   static public void showTree( Dec tree, int spaces ) {
     if( tree instanceof FunctionDec ) {
-      indent( spaces );
-      System.out.println( "FunctionDec:" );
+      showTree( (FunctionDec)tree, spaces );
     }
     else {
       indent( spaces );
       System.out.println( "Illegal expression at line " + tree.pos  );
     }
+  }
+
+  static private void showTree(FunctionDec tree, int spaces) {
+    indent(spaces);
+    System.out.println("FunctionDec: " + tree.result.typ + " " + tree.func);
+    spaces += SPACES;
+    showTree(tree.params, spaces);
+    showTree(tree.body, spaces);
   }
 
   // Abstract class VarDec
