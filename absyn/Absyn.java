@@ -168,17 +168,25 @@ abstract public class Absyn {
   // Abstract class VarDec
   static public void showTree( VarDec tree, int spaces ) {
     if( tree instanceof SimpleDec ) {
-      indent( spaces );
-      System.out.println( "SimpleDec:" );
+      showTree( (SimpleDec)tree, spaces );
     }
     else if( tree instanceof ArrayDec ) {
-      indent( spaces );
-      System.out.println( "ArrayDec:" );
+      showTree( (ArrayDec)tree, spaces );
     }
     else {
       indent( spaces );
       System.out.println( "Illegal expression at line " + tree.pos  );
     }
+  }
+
+  static private void showTree(SimpleDec tree, int spaces) {
+    indent(spaces);
+    System.out.println("SimpleDec: " + tree.typ.typ + " " + tree.name);
+  }
+
+  static private void showTree(ArrayDec tree, int spaces) {
+    indent(spaces);
+    System.out.println("ArrayDec: " + tree.typ.typ + " " + tree.name + "[" + tree.size.value + "]");
   }
 
   // Miscellaneous classes (DecList, VarDecList, ExpList)
