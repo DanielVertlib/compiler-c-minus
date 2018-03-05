@@ -81,7 +81,7 @@ terminal String ID, NUM;
 terminal ERROR;
 
 non terminal Exp program1;
-non terminal ExpList args, argList;
+non terminal ExpList args, argList, expList;
 non terminal Exp stmt, if_stmt, repeat_stmt, assign_stmt, read_stmt, write_stmt;
 non terminal Exp exp, term, factor;
 non terminal VarExp var;
@@ -91,8 +91,9 @@ non terminal Dec dec;
 non terminal VarDec varDec;
 non terminal FunctionDec funDec;
 non terminal NameTy nameTy;
-non terminal VarDecList params, paramList;
+non terminal VarDecList params, paramList, locDec;
 non terminal Var param;
+non terminal CompoundExp compExp;
 
 /* ----------------------------Grammar Section-------------------- */
 
@@ -178,6 +179,10 @@ params   ::= paramList:p
            {:
              RESULT = new VarDecList(pleft, p);
            :}
+           | VOID:v
+           {:
+             RESULT = new VarDecList(vleft, null);
+           :}
            // TODO: check errors
          ;
 
@@ -205,7 +210,7 @@ paramList ::= paramList:p1 COMMA param:p2
 //9 param --> type-specifier ID | type-specifier ID [ ]
 param ::= INT:n ID:i
             {:
-              RESULT = new SimpleDec(nleft, new NameTy(nleft, NameTy.INT), n)
+              RESULT = new SimpleDec(nleft, new NameTy(nleft, NameTy.INT), n);
             :}
           | INT:n ID:i LBRACKET RBRACKET
             {:
@@ -214,6 +219,11 @@ param ::= INT:n ID:i
           ;
 
 //10 compound-stmt --> { local-declarations statement-list }
+compExp ::= LBRACE:lb locDec:ld expList:e RBRACE
+            {:
+              RESULT = new CompoundExp(lbleft, ld, e);
+            :}
+          ;
 
 //11 local-declarations --> local-declarations var-declaration | empty
 
