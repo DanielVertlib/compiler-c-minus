@@ -293,31 +293,31 @@ selStmt ::= if LPAREN exp:e RPAREN stmt:s
           ;
 
 //16 iteration-stmt --> while ( expression ) statement
-iterStmt ::= while LPAREN exp:e RPAREN stmt:s
+iterStmt ::= while:w LPAREN exp:e RPAREN stmt:s
             {:
-
+              RESULT = new WhileExp(wleft, e, s);
             :}
           ;
 
 //17 return-stmt --> return ; | return expression ;
-returnStmt ::= return SEMI
+returnStmt ::= return:r SEMI
             {:
-
+              RESULT = new ReturnExp(rleft, null);
             :}
-            | return exp:e SEMI
+            | return:r exp:e SEMI
             {:
-
+              RESULT = new ReturnExp(rleft, e);
             :}
           ;
 
 //18 expression --> var = expression | simple-expression
 exp ::=     var:v ASSIGN exp:e
             {:
-
+              RESULT = new AssignExp(vleft, v, e);
             :}
-            | simpExp
+            | simpExp:s
             {:
-
+              RESULT = s;
             :}
           ;
 
