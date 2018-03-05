@@ -90,8 +90,8 @@ identifier = {letter}+
 ","                { return symbol(sym.COMMA); }
 
 /* All other tokens, including invalid characters */
+{WhiteSpace}*      { /* skip whitespace */ }
 {identifier}       { return symbol(sym.ID, yytext()); }
 {number}           { return symbol(sym.NUM, yytext()); }
 .                  { return symbol(sym.ERROR); }
-{WhiteSpace}*      { /* skip whitespace */ }
 "{"[^\}]*"}"       { /* skip comments */ }
