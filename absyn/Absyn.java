@@ -66,9 +66,9 @@ abstract public class Absyn {
   }
 
   static public void showTree( VarExp tree, int spaces ) {
-    indent( spaces );
-    System.out.println( "VarExp:" );
-    spaces += SPACES;
+    // indent( spaces );
+    // System.out.println( "VarExp:" );
+    // spaces += SPACES;
     showTree(tree.variable, spaces);
   }
 
