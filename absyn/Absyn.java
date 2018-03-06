@@ -153,6 +153,8 @@ abstract public class Absyn {
   static public void showTree( ReturnExp tree, int spaces ) {
     indent( spaces );
     System.out.println( "ReturnExp: " );
+    spaces += SPACES;
+    showTree(tree.exp, spaces);
   }
 
   static public void showTree( CompoundExp tree, int spaces ) {
