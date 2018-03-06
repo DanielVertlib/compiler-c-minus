@@ -15,8 +15,7 @@ abstract public class Absyn {
       showTree((SimpleVar)tree, spaces);
     }
     else if( tree instanceof IndexVar ) {
-      indent( spaces );
-      System.out.println( "IndexVar:" );
+      showTree((IndexVar)tree, spaces);
     }
     else {
       indent( spaces );
@@ -27,6 +26,11 @@ abstract public class Absyn {
     static public void showTree(SimpleVar tree, int spaces) {
       indent(spaces);
       System.out.println( "SimpleVar: " + tree.name);
+    }
+
+    static public void showTree(IndexVar tree, int spaces) {
+      indent( spaces );
+      System.out.println( "IndexVar: " + tree.name);
     }
 
   // Abstract class Exp
@@ -64,11 +68,12 @@ abstract public class Absyn {
   static public void showTree( VarExp tree, int spaces ) {
     indent( spaces );
     System.out.println( "VarExp:" );
+    showTree(tree.variable, spaces);
   }
 
   static public void showTree( IntExp tree, int spaces ) {
     indent( spaces );
-    System.out.println( "IntExp: " );
+    System.out.println( "IntExp: " + tree.value);
   }
 
   static public void showTree( CallExp tree, int spaces ) {
