@@ -138,7 +138,15 @@ abstract public class Absyn {
     System.out.println( "IfExp:" );
     spaces += SPACES;
     showTree( tree.test, spaces );
+
+    indent( spaces -4);
+    System.out.println( "ThenExp:" );
+    spaces += SPACES;
     showTree( tree.thenpart, spaces );
+
+    indent( spaces -8);
+    System.out.println( "ElseExp:" );
+    spaces += SPACES;
     showTree( tree.elsepart, spaces );
   }
 
