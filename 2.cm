@@ -1,0 +1,13 @@
+/* Test program showing invalid type error*/
+
+void main(void) {
+  void x;
+  x = 5;
+
+  while (x > 3) {
+    x = x - 1;
+  }
+
+  if (x == 3) x = 4;
+  else x = 3;
+}
