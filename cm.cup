@@ -1,5 +1,6 @@
 /*
-  Created by: Fei Song and RYAN
+  Created by: Fei Song
+  Modified By: Daniel Vertlib & Ryan Rudzitis
   File Name: tiny.cup
   To Build: java java_cup.Main < tiny.cup
 */
