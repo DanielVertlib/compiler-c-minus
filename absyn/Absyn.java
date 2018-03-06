@@ -134,6 +134,9 @@ abstract public class Absyn {
   static public void showTree( WhileExp tree, int spaces ) {
     indent( spaces );
     System.out.println( "WhileExp: " );
+    spaces += SPACES;
+    showTree(tree.test, spaces);
+    showTree(tree.body, spaces);
   }
 
   static public void showTree( ReturnExp tree, int spaces ) {
@@ -144,6 +147,9 @@ abstract public class Absyn {
   static public void showTree( CompoundExp tree, int spaces ) {
     indent( spaces );
     System.out.println( "CompoundExp: "  );
+    spaces += SPACES;
+    showTree(tree.decs, spaces);
+    showTree(tree.exps, spaces);
   }
 
   // Abstract class Dec
