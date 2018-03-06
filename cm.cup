@@ -1,8 +1,8 @@
 /*
   Created by: Fei Song
   Modified By: Daniel Vertlib & Ryan Rudzitis
-  File Name: tiny.cup
-  To Build: java java_cup.Main < tiny.cup
+  File Name: cm.cup
+  To Build: java java_cup.Main < cm.cup
 */
 
 

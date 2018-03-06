@@ -1,8 +1,8 @@
 /*
   Created By: Fei Song
   Modified By: Daniel Vertlib & Ryan Rudzitis
-  File Name: tiny.flex
-  To Build: jflex tiny.flex
+  File Name: cm.flex
+  To Build: jflex cm.flex
 
   and then after the parser is created
     javac Lexer.java
@@ -35,16 +35,12 @@ import java_cup.runtime.*;
 %{
     // Token has no value
     private Symbol symbol(int type) {
-      Symbol test = new Symbol(type, yyline, yycolumn);
-      System.out.println(test);
-      return test;
+      return new Symbol(type, yyline, yycolumn);
     }
 
     // Token has value
     private Symbol symbol(int type, Object value) {
-        Symbol test = new Symbol(type, yyline, yycolumn, value);
-        System.out.println(test);
-        return test;
+      return new Symbol(type, yyline, yycolumn, value);
     }
 %}
 
