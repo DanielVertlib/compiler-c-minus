@@ -1,15 +1,14 @@
-A JFlex+Cup implementation for the Tiny language.
+A JFlex+Cup implementation for the CM language.
 
   Note that you need to modify the classpath in the Makefile so that it
 will point to the directory where "java_cup" is located.  In my own setting,
 classpath is /usr/share/java/cup.jar.
 
-  To build the parser, type "make" in the current directory, which will 
-generate an executable program called "tiny".
+  To build the parser, type "make" in the current directory
 
-  To test source code like "fac.tiny", type 
+  To test source code like "fac.cm", type
 
-    "java -classpath /usr/share/java/cup.jar:. Main fac.tiny" 
+    "java -classpath /usr/share/java/cup.jar:. Main fac.cm"
 
 and the syntax tree will be displayed on the screen.
 
