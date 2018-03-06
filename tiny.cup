@@ -390,7 +390,7 @@ relop ::=     LE
 //22 additive-expression --> additive-expression addop term | term
 addExp ::= addExp:e addop:a term:t
             {:
-              RESULT = new OpExp(eleft, e, OpExp.PLUS, t);
+              RESULT = new OpExp(eleft, e, a, t);
             :}
             | term:t
             {:
