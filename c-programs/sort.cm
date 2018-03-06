@@ -1,4 +1,4 @@
-/* A program to perform selection sort 
+/* A program to perform selection sort
    on a 10 element array */
 
 int x[10];
@@ -11,10 +11,10 @@ int minloc(int a[], int low, int high) {
   while (i < high) {
     if (a[i] < x) {
        x = a[i];
-       k = i; 
+       k = i;
     }
     i = i + 1;
-  } 
+  }
   return k;
 }
 

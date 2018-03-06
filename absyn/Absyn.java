@@ -144,10 +144,12 @@ abstract public class Absyn {
     spaces += SPACES;
     showTree( tree.thenpart, spaces );
 
-    indent( spaces -8);
-    System.out.println( "ElseExp:" );
-    spaces += SPACES;
-    showTree( tree.elsepart, spaces );
+    if(tree.elsepart != null) {
+      indent( spaces -8);
+      System.out.println( "ElseExp:" );
+      spaces += SPACES;
+      showTree( tree.elsepart, spaces );
+    }
   }
 
   static public void showTree( WhileExp tree, int spaces ) {
@@ -213,7 +215,7 @@ abstract public class Absyn {
 
   static private void showTree(ArrayDec tree, int spaces) {
     indent(spaces);
-    System.out.println("ArrayDec: " + tree.typ.typ + " " + tree.name + "[" + tree.size.value + "]");
+    System.out.println("ArrayDec: " + tree.typ.toString(tree.typ) + " " + tree.name + "[" + tree.size.value + "]");
   }
 
   // Miscellaneous classes (DecList, VarDecList, ExpList)
