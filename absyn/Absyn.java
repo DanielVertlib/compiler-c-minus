@@ -204,7 +204,7 @@ abstract public class Absyn {
     }
     else {
       indent( spaces );
-      System.out.println( "Illegal expression at line " + tree.pos  );
+      System.out.println( "Illegal expression at line "); //ADD LINE NUMBER
     }
   }
 

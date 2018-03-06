@@ -151,8 +151,12 @@ dec        ::= varDec:d
 //4 var-declaration --> type-specifier ID ; | type-specifier ID [ NUM ] ;
 varDec   ::= nameTy:t ID:i SEMI
            {:
-             // TODO: check type isnt void for this case, report errors
-             RESULT = new SimpleDec(tleft, t, i);
+             //check for void type
+             if(NameTy.VOID == t.typ) {
+                parser.report_error("Void is not a valid type for a variable", t);
+             } else {
+               RESULT = new SimpleDec(tleft, t, i);
+             }
            :}
            | nameTy:t ID:i LBRACKET NUM:n RBRACKET SEMI
            {:

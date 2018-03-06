@@ -1,5 +1,5 @@
 void main(void) {
-  int x; int fac;
+  int x; void fac;
   x = input();
   fac = 1;
 
