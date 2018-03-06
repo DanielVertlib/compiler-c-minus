@@ -91,6 +91,7 @@ identifier = {letter}+
 
 /* All other tokens, including invalid characters */
 {WhiteSpace}*      { /* skip whitespace */ }
+"/*" [^*] ~"*/" | "/*" "*"+ "/"       { /* skip comments */ }
 {identifier}       { return symbol(sym.ID, yytext()); }
 {number}           { return symbol(sym.NUM, yytext()); }
 .                  { return symbol(sym.ERROR); }
