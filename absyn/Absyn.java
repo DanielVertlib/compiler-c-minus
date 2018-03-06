@@ -176,7 +176,7 @@ abstract public class Absyn {
 
   static private void showTree(FunctionDec tree, int spaces) {
     indent(spaces);
-    System.out.println("FunctionDec: " + tree.result.typ + " " + tree.func);
+    System.out.println("FunctionDec: " + tree.result.toString(tree.result) + " " + tree.func);
     spaces += SPACES;
     showTree(tree.params, spaces);
     showTree(tree.body, spaces);
