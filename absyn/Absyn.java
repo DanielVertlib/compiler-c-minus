@@ -12,8 +12,7 @@ abstract public class Absyn {
   // Abstract class Var
   static public void showTree( Var tree, int spaces ) {
     if( tree instanceof SimpleVar ) {
-      indent( spaces );
-      System.out.println( "SimpleVar:" );
+      showTree((SimpleVar)tree, spaces);
     }
     else if( tree instanceof IndexVar ) {
       indent( spaces );
@@ -23,7 +22,12 @@ abstract public class Absyn {
       indent( spaces );
       System.out.println( "Illegal expression at line " + tree.pos  );
     }
+
   }
+    static public void showTree(SimpleVar tree, int spaces) {
+      indent(spaces);
+      System.out.println( "SimpleVar: " + tree.name);
+    }
 
   // Abstract class Exp
   static public void showTree( Exp tree, int spaces ) {
